@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'home/home.dart';
-import 'recipes/recipes.dart';
-import 'fill/fill.dart';
-import 'profile/profile.dart';
+import 'screens/home/home.dart';
+import 'screens/recipes/recipes.dart';
+import 'screens/fill/fill.dart';
+import 'screens/profile/profile.dart';
+
+void main() {
+  runApp(App());
+}
 
 class App extends StatefulWidget {
   @override
@@ -18,11 +22,24 @@ class _AppState extends State<App> {
     Profile(),
   ];
 
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: tabs[_currentIndex],
+        body: PageView(
+          controller: pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          children: tabs,
+        ),
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
             items: [
@@ -46,6 +63,9 @@ class _AppState extends State<App> {
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
+                //pageController.animateToPage(index,
+                //duration: Duration(milliseconds: 500), curve: Curves.ease);
+                pageController.jumpToPage(index);
               });
             }),
       ),
@@ -55,11 +75,12 @@ class _AppState extends State<App> {
 
   ThemeData _theme() {
     return ThemeData(
+      scaffoldBackgroundColor: Colors.blueGrey[900],
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.blueGrey[900],
-        selectedItemColor: Colors.cyanAccent[400],
-        unselectedItemColor: Colors.white,
-        showUnselectedLabels: false,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.blueGrey[600],
+        showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
       ),
     );
