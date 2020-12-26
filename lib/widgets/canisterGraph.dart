@@ -106,7 +106,7 @@ class _CanisterGraphState extends State<CanisterGraph> {
           BarChartRodData(
             y: 15,
             colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 13,
+            width: 16,
           ),
         ],
         showingTooltipIndicators: [0],
@@ -117,7 +117,7 @@ class _CanisterGraphState extends State<CanisterGraph> {
           BarChartRodData(
             y: 45,
             colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 13,
+            width: 16,
           ),
         ],
         showingTooltipIndicators: [0],
@@ -128,7 +128,7 @@ class _CanisterGraphState extends State<CanisterGraph> {
           BarChartRodData(
             y: 80,
             colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 13,
+            width: 16,
           ),
         ],
         showingTooltipIndicators: [0],
@@ -139,7 +139,7 @@ class _CanisterGraphState extends State<CanisterGraph> {
           BarChartRodData(
             y: 100,
             colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 13,
+            width: 16,
           ),
         ],
         showingTooltipIndicators: [0],
@@ -150,7 +150,7 @@ class _CanisterGraphState extends State<CanisterGraph> {
           BarChartRodData(
             y: 32,
             colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 13,
+            width: 16,
           ),
         ],
         showingTooltipIndicators: [0],
@@ -161,7 +161,7 @@ class _CanisterGraphState extends State<CanisterGraph> {
           BarChartRodData(
             y: 50,
             colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 13,
+            width: 16,
           ),
         ],
         showingTooltipIndicators: [0],

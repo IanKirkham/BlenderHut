@@ -3,10 +3,13 @@ import 'screens/home/home.dart';
 import 'screens/recipes/recipes.dart';
 import 'screens/fill/fill.dart';
 import 'screens/profile/profile.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(App());
 }
+
+GlobalKey navBarGlobalKey = GlobalKey(debugLabel: 'bottomAppBar');
 
 class App extends StatefulWidget {
   @override
@@ -41,18 +44,19 @@ class _AppState extends State<App> {
           children: tabs,
         ),
         bottomNavigationBar: BottomNavigationBar(
+            key: navBarGlobalKey,
             currentIndex: _currentIndex,
             items: [
               BottomNavigationBarItem(
-                icon: new Icon(Icons.home),
+                icon: Icon(Icons.home),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: new Icon(Icons.view_module),
+                icon: Icon(Icons.view_module),
                 label: 'All Recipes',
               ),
               BottomNavigationBarItem(
-                icon: new Icon(Icons.addchart),
+                icon: Icon(Icons.addchart),
                 label: 'Fill Cansiters',
               ),
               BottomNavigationBarItem(
@@ -63,9 +67,9 @@ class _AppState extends State<App> {
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
-                //pageController.animateToPage(index,
-                //duration: Duration(milliseconds: 500), curve: Curves.ease);
-                pageController.jumpToPage(index);
+                pageController.animateToPage(index,
+                    duration: Duration(milliseconds: 500), curve: Curves.ease);
+                //pageController.jumpToPage(index);
               });
             }),
       ),
@@ -75,6 +79,25 @@ class _AppState extends State<App> {
 
   ThemeData _theme() {
     return ThemeData(
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.lightBlueAccent,
+      ),
+      appBarTheme: AppBarTheme(
+        color: Colors.blueGrey[900],
+        elevation: 0,
+      ),
+      textTheme: TextTheme(
+          headline3: GoogleFonts.montserrat(
+            color: Colors.white,
+            fontSize: 40,
+          ),
+          headline4: GoogleFonts.montserrat(
+            color: Colors.white,
+          ),
+          bodyText2: GoogleFonts.montserrat(
+            color: Colors.white,
+            fontSize: 18,
+          )),
       scaffoldBackgroundColor: Colors.blueGrey[900],
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.blueGrey[900],
