@@ -27,20 +27,46 @@ class _RecipesState extends State<Recipes> {
   }
 }
 
-class RecipeList extends StatelessWidget {
-  var recipes = List<String>.generate(100, (i) => "Item $i");
+class RecipeList extends StatefulWidget {
+  @override
+  _RecipeListState createState() => _RecipeListState();
+}
+
+class _RecipeListState extends State<RecipeList> {
+  var _recipes = List<String>.generate(100, (i) => "Item $i");
+  var _favButton = List<Icon>.generate(
+      100, (i) => Icon(Icons.star_border, color: Colors.grey));
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: recipes.length,
+      itemCount: _recipes.length,
       itemBuilder: (context, index) {
         return ListTile(
+          leading: _favButton[index],
           title: Text(
-            '${recipes[index]}',
+            _recipes[index],
             style: TextStyle(color: Colors.white),
           ),
+          subtitle: Text("subtext"),
+          onTap: () {},
         );
+        // return Row(
+        //   children: [
+        //     MaterialButton(
+        //       onPressed: () {
+        //         setState(() {
+        //           _favButton = Icon(Icons.star, color: Colors.yellow);
+        //         });
+        //       },
+        //       child: _favButton,
+        //     ),
+        //     Text(
+        //       '${recipes[index]}',
+        //       style: TextStyle(color: Colors.white),
+        //     ),
+        //   ],
+        // );
       },
     );
   }

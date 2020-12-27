@@ -1,0 +1,3 @@
+class RecipeModel {
+  var title;
+}
