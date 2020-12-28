@@ -1,171 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CanisterGraph extends StatefulWidget {
+  final Function(BuildContext, double) onBarSelected;
+  CanisterGraph(this.onBarSelected);
+
   @override
   _CanisterGraphState createState() => _CanisterGraphState();
 }
 
 class _CanisterGraphState extends State<CanisterGraph> {
+  List<_IngredientData> data = [
+    _IngredientData('Strawberry', 90, Colors.red),
+    _IngredientData('Banana', 75, Colors.yellow),
+    _IngredientData('Milk', 30, Colors.white),
+    _IngredientData('Ice Cream', 100, Colors.orange[100]),
+    _IngredientData('Peach', 10, Colors.red[200]),
+  ];
+
+  var _selectedIndex;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: Card(
-        elevation: 5,
-        margin: EdgeInsets.all(13),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-        color: Colors.blueGrey[800],
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: BarChart(
-            BarChartData(
-              alignment: BarChartAlignment.spaceAround,
-              maxY: 115,
-              barTouchData: BarTouchData(
-                enabled: true,
-                touchTooltipData: BarTouchTooltipData(
-                  tooltipBgColor: Colors.transparent,
-                  tooltipPadding: const EdgeInsets.all(0),
-                  tooltipBottomMargin: 8,
-                  getTooltipItem: (
-                    BarChartGroupData group,
-                    int groupIndex,
-                    BarChartRodData rod,
-                    int rodIndex,
-                  ) {
-                    return BarTooltipItem(
-                      rod.y.round().toString(),
-                      TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              titlesData: FlTitlesData(
-                show: true,
-                bottomTitles: SideTitles(
-                  showTitles: true,
-                  getTextStyles: (value) => const TextStyle(
-                      color: Color(0xff7589a2),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14),
-                  margin: 20,
-                ),
-                leftTitles: SideTitles(
-                  showTitles: true,
-                  getTextStyles: (value) => const TextStyle(
-                      color: Color(0xff7589a2),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14),
-                  margin: 15,
-                  getTitles: (value) {
-                    if (value == 0) {
-                      return '0%';
-                    } else if (value == 50) {
-                      return '50%';
-                    } else if (value == 100) {
-                      return '100%';
-                    } else {
-                      return '';
-                    }
-                  },
-                ),
-              ),
-              axisTitleData: FlAxisTitleData(
-                show: true,
-                bottomTitle: AxisTitle(
-                  showTitle: true,
-                  titleText: "Canisters",
-                  textStyle: TextStyle(
-                    color: Color(0xff7589a2),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              borderData: FlBorderData(
-                show: false,
-              ),
-              barGroups: getGraphData(),
+    return SafeArea(
+      child: Container(
+        height: MediaQuery.of(context).size.height / 2,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(15),
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.blueGrey[800],
+        ),
+        child: SfCartesianChart(
+          onSelectionChanged: (SelectionArgs args) {
+            if (_selectedIndex == args.pointIndex) {
+              _selectedIndex = null;
+              return;
+            }
+            _selectedIndex = args.pointIndex;
+            if (widget.onBarSelected != null) {
+              widget.onBarSelected(context, data[_selectedIndex].amount);
+            }
+          },
+          primaryXAxis: CategoryAxis(
+            labelStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
             ),
           ),
+          primaryYAxis: NumericAxis(
+            minimum: 0,
+            maximum: 100,
+            interval: 25,
+            labelFormat: '{value}%',
+            labelStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+          // Chart title
+          title: ChartTitle(
+            text: 'Canisters',
+            textStyle: TextStyle(color: Colors.white),
+          ),
+          tooltipBehavior: TooltipBehavior(
+            enable: widget.onBarSelected == null ? true : false,
+          ),
+          series: <ChartSeries<_IngredientData, String>>[
+            BarSeries<_IngredientData, String>(
+              dataSource: data,
+              xValueMapper: (_IngredientData ingredients, _) =>
+                  ingredients.ingredient,
+              yValueMapper: (_IngredientData ingredients, _) =>
+                  ingredients.amount,
+              pointColorMapper: (_IngredientData ingredients, _) =>
+                  ingredients.color,
+              selectionBehavior: SelectionBehavior(
+                enable: true,
+                unselectedColor: Colors.grey,
+              ),
+              enableTooltip: true,
+              name: 'Ingredients',
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
+              ),
+              dataLabelSettings: DataLabelSettings(
+                isVisible: true,
+                useSeriesColor: true,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+}
 
-  //TODO: make this method dynamic with data from backend
-  List<BarChartGroupData> getGraphData() {
-    return [
-      BarChartGroupData(
-        x: 1,
-        barRods: [
-          BarChartRodData(
-            y: 15,
-            colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 16,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 2,
-        barRods: [
-          BarChartRodData(
-            y: 45,
-            colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 16,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 3,
-        barRods: [
-          BarChartRodData(
-            y: 80,
-            colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 16,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 4,
-        barRods: [
-          BarChartRodData(
-            y: 100,
-            colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 16,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 5,
-        barRods: [
-          BarChartRodData(
-            y: 32,
-            colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 16,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 6,
-        barRods: [
-          BarChartRodData(
-            y: 50,
-            colors: [Colors.lightBlueAccent, Colors.greenAccent],
-            width: 16,
-          ),
-        ],
-        showingTooltipIndicators: [0],
-      ),
-    ];
-  }
+class _IngredientData {
+  _IngredientData(this.ingredient, this.amount, this.color);
+
+  final String ingredient;
+  double amount;
+  final Color color;
 }

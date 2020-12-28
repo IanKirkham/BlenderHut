@@ -1,4 +1,5 @@
 import 'package:blenderapp/screens/recipe-builder/recipe-builder.dart';
+import 'package:blenderapp/screens/recipe/recipe.dart';
 import 'package:flutter/material.dart';
 
 class Recipes extends StatefulWidget {
@@ -33,9 +34,8 @@ class RecipeList extends StatefulWidget {
 }
 
 class _RecipeListState extends State<RecipeList> {
-  var _recipes = List<String>.generate(100, (i) => "Item $i");
-  var _favButton = List<Icon>.generate(
-      100, (i) => Icon(Icons.star_border, color: Colors.grey));
+  var _recipes = List<String>.generate(100, (i) => "Recipe #$i");
+  var _isFavorited = List<bool>.generate(100, (i) => false);
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +43,24 @@ class _RecipeListState extends State<RecipeList> {
       itemCount: _recipes.length,
       itemBuilder: (context, index) {
         return ListTile(
-          leading: _favButton[index],
+          leading: IconButton(
+              icon: (_isFavorited[index]
+                  ? Icon(Icons.star, color: Colors.orange, size: 30)
+                  : Icon(Icons.star_border, color: Colors.grey, size: 30)),
+              onPressed: () => setState(() {
+                    _isFavorited[index] = !_isFavorited[index];
+                  })),
           title: Text(
             _recipes[index],
             style: TextStyle(color: Colors.white),
           ),
           subtitle: Text("subtext"),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Recipe(_recipes[index])),
+            );
+          },
         );
         // return Row(
         //   children: [

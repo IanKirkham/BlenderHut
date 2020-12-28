@@ -1,8 +1,6 @@
-import 'package:blenderapp/screens/fill/fill.dart';
 import 'package:blenderapp/widgets/canisterGraph.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../main.dart';
 
@@ -17,44 +15,46 @@ class _HomeState extends State<Home> {
     return Container(
       child: Scaffold(
         body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  final BottomNavigationBar navBar =
-                      navBarGlobalKey.currentWidget;
-                  navBar.onTap(2);
-                  //final snackBar =
-                  //  SnackBar(content: Text("Clicked the Container!"));
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    final BottomNavigationBar navBar =
+                        navBarGlobalKey.currentWidget;
+                    navBar.onTap(2);
+                    //final snackBar =
+                    //  SnackBar(content: Text("Clicked the Container!"));
 
-                  //Scaffold.of(context).showSnackBar(snackBar);
-                },
-                child: CanisterGraph(),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Favorites",
-                      style: Theme.of(context).textTheme.headline3,
+                    //Scaffold.of(context).showSnackBar(snackBar);
+                  },
+                  child: CanisterGraph(null),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Favorites",
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
                     ),
-                  ),
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      viewportFraction: 0.8,
-                      initialPage: 0,
-                      pageViewKey: PageStorageKey<String>('carousel_slider'),
-                      enableInfiniteScroll: false,
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        viewportFraction: 0.8,
+                        initialPage: 0,
+                        pageViewKey: PageStorageKey<String>('carousel_slider'),
+                        enableInfiniteScroll: false,
+                      ),
+                      items: getFavorites(context),
                     ),
-                    items: getFavorites(context),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -68,7 +68,7 @@ List<Widget> getFavorites(context) {
 
   // Fetch data from API
 
-  if (true) {
+  if (false) {
     list.add(
       GestureDetector(
         onTap: () {
