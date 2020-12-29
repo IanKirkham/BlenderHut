@@ -68,7 +68,7 @@ List<Widget> getFavorites(context) {
 
   // Fetch data from API
 
-  if (false) {
+  if (true) {
     list.add(
       GestureDetector(
         onTap: () {

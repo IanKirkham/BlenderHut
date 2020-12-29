@@ -1,3 +1,4 @@
 class RecipeModel {
-  var title;
+  String title;
+  //List<
 }
