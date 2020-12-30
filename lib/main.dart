@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'screens/home/home.dart';
-import 'screens/recipes/recipes.dart';
 import 'screens/fill/fill.dart';
 import 'screens/profile/profile.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'screens/recipe_list/recipe_list.dart';
 
 void main() {
   runApp(App());
@@ -20,7 +20,7 @@ class _AppState extends State<App> {
   int _currentIndex = 0;
   final tabs = [
     Home(),
-    Recipes(),
+    RecipeList(),
     Fill(),
     Profile(),
   ];
@@ -87,17 +87,26 @@ class _AppState extends State<App> {
         elevation: 0,
       ),
       textTheme: TextTheme(
-          headline3: GoogleFonts.montserrat(
-            color: Colors.white,
-            fontSize: 40,
-          ),
-          headline4: GoogleFonts.montserrat(
-            color: Colors.white,
-          ),
-          bodyText2: GoogleFonts.montserrat(
-            color: Colors.white,
-            fontSize: 18,
-          )),
+        headline3: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontSize: 40,
+        ),
+        headline4: GoogleFonts.montserrat(
+          color: Colors.white,
+        ),
+        headline6: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontSize: 30,
+        ),
+        bodyText2: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontSize: 18,
+        ),
+        subtitle1: GoogleFonts.montserrat(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+      ),
       scaffoldBackgroundColor: Color(0xFF1F2C34), //Colors.blueGrey[900],
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Color(0xFF2F3D46), //Colors.blueGrey[900],

@@ -41,6 +41,40 @@ class _HomeState extends State<Home> {
                       style: Theme.of(context).textTheme.headline3,
                     ),
                   ),
+                  // Swiper(
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     return Image.network(
+                  //       "http://via.placeholder.com/288x188",
+                  //       fit: BoxFit.fill,
+                  //     );
+                  //   },
+                  //   itemCount: 10,
+                  //   itemWidth: 188.0,
+                  //   itemHeight: 288.0,
+                  //   layout: SwiperLayout.STACK,
+                  // ),
+                  // Swiper(
+                  //     layout: SwiperLayout.CUSTOM,
+                  //     customLayoutOption:
+                  //         new CustomLayoutOption(startIndex: -1, stateCount: 3)
+                  //             .addRotate(
+                  //                 [-45.0 / 180, 0.0, 45.0 / 180]).addTranslate([
+                  //       new Offset(-370.0, -40.0),
+                  //       new Offset(0.0, 0.0),
+                  //       new Offset(370.0, -40.0)
+                  //     ]),
+                  //     pagination: SwiperPagination(),
+                  //     itemWidth: 300.0,
+                  //     itemHeight: 200.0,
+                  //     itemBuilder: (context, index) {
+                  //       return new Container(
+                  //         color: Colors.grey,
+                  //         child: new Center(
+                  //           child: new Text("$index"),
+                  //         ),
+                  //       );
+                  //     },
+                  //     itemCount: 10),
                   CarouselSlider(
                     options: CarouselOptions(
                       viewportFraction: 0.8,
@@ -66,7 +100,7 @@ List<Widget> getFavorites(context) {
 
   // Fetch data from API
 
-  if (true) {
+  if (false) {
     list.add(
       GestureDetector(
         onTap: () {
@@ -107,40 +141,40 @@ List<Widget> getFavorites(context) {
       ),
     );
     return list;
-  }
-
-  for (int i = 0; i < 5; i++) {
-    list.add(
-      Container(
-        margin: EdgeInsets.symmetric(horizontal: 5.0),
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-          color: Colors.white,
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            children: [
-              Text(
-                'Favorite #' + (i + 1).toString(),
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              Text(
-                'Secondary Text',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Here is some words here or something...',
-                  style: Theme.of(context).textTheme.bodyText2,
+  } else {
+    for (int i = 0; i < 5; i++) {
+      list.add(
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 5.0),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            color: Color(0xFF2F3D46),
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: [
+                Text(
+                  'Favorite #' + (i + 1).toString(),
+                  style: Theme.of(context).textTheme.headline6,
                 ),
-              ),
-            ],
+                Text(
+                  'Secondary Text',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Blah Blah Blah Blah Blah Blah Blah',
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
+    return list;
   }
-
-  return list;
 }
