@@ -2,18 +2,18 @@ import 'package:blenderapp/models/containerData.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class CanisterGraph extends StatefulWidget {
+class ContainerGraph extends StatefulWidget {
   final Function(BuildContext, ContainerData) onBarSelected;
-  CanisterGraph(this.onBarSelected);
+  ContainerGraph(this.onBarSelected);
 
   @override
-  _CanisterGraphState createState() => _CanisterGraphState();
+  _ContainerGraphState createState() => _ContainerGraphState();
 }
 
-class _CanisterGraphState extends State<CanisterGraph> {
+class _ContainerGraphState extends State<ContainerGraph> {
   List<ContainerData> data = [
-    ContainerData('Strawberry', 90, Colors.red),
-    ContainerData('Banana', 75, Colors.yellow),
+    ContainerData('Strawberry', 90, Color(0xfff25f5c)),
+    ContainerData('Banana', 75, Color(0xffffe066)),
     ContainerData('Milk', 30, Colors.white),
     ContainerData('Ice Cream', 100, Colors.orange[100]),
     ContainerData('Peach', 15, Colors.red[200]),
@@ -29,8 +29,8 @@ class _CanisterGraphState extends State<CanisterGraph> {
       padding: EdgeInsets.all(15),
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.blueGrey[800],
+        borderRadius: BorderRadius.circular(5),
+        color: Color(0xFF2F3D46), //Colors.blueGrey[800],
       ),
       child: SfCartesianChart(
         onSelectionChanged: (SelectionArgs args) async {
@@ -68,9 +68,10 @@ class _CanisterGraphState extends State<CanisterGraph> {
         // Chart title
         title: ChartTitle(
           text: 'Containers',
+          // alignment: ChartAlignment.near,
           textStyle: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
         tooltipBehavior: TooltipBehavior(

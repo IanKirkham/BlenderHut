@@ -83,7 +83,7 @@ class _AppState extends State<App> {
         backgroundColor: Colors.lightBlueAccent,
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.blueGrey[900],
+        color: Color(0xFF1F2C34), //Colors.blueGrey[900],
         elevation: 0,
       ),
       textTheme: TextTheme(
@@ -98,13 +98,14 @@ class _AppState extends State<App> {
             color: Colors.white,
             fontSize: 18,
           )),
-      scaffoldBackgroundColor: Colors.blueGrey[900],
+      scaffoldBackgroundColor: Color(0xFF1F2C34), //Colors.blueGrey[900],
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.blueGrey[900],
+        backgroundColor: Color(0xFF2F3D46), //Colors.blueGrey[900],
         selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.blueGrey[600],
+        unselectedItemColor: Color(0xFF788388), //Colors.blueGrey[600],
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
+        elevation: 10,
       ),
     );
   }

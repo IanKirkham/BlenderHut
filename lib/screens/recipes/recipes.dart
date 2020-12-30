@@ -45,8 +45,8 @@ class _RecipeListState extends State<RecipeList> {
         return ListTile(
           leading: IconButton(
               icon: (_isFavorited[index]
-                  ? Icon(Icons.star, color: Colors.orange, size: 30)
-                  : Icon(Icons.star_border, color: Colors.grey, size: 30)),
+                  ? Icon(Icons.favorite, color: Colors.pinkAccent, size: 30)
+                  : Icon(Icons.favorite_border, color: Colors.grey, size: 30)),
               onPressed: () => setState(() {
                     _isFavorited[index] = !_isFavorited[index];
                   })),

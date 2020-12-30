@@ -39,8 +39,8 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                   height: MediaQuery.of(context).size.height / 2,
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blueGrey[300],
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color(0xFF2F3D46), //Colors.blueGrey[300],
                   ),
                   child: Center(
                     child: Text("Insert adding new ingredient stuff here"),
@@ -51,14 +51,14 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                     // save to the database
                     Navigator.pop(context);
                   },
-                  minWidth: MediaQuery.of(context).size.width / 2,
-                  height: MediaQuery.of(context).size.height / 15,
-                  color: Colors.green,
+                  minWidth: MediaQuery.of(context).size.width / 3,
+                  height: MediaQuery.of(context).size.height / 17,
+                  color: Color(0xFF48C28C), //Colors.green,
                   child: Text(
-                    "Finish",
+                    "Confirm",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: 24,
                     ),
                   ),
                 ),

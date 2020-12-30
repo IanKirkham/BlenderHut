@@ -1,5 +1,6 @@
 import 'package:blenderapp/custom_icons_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _ProfileState extends State<Profile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(Icons.star_border, size: 40),
+          Icon(Icons.favorite_border, size: 40, color: Colors.grey),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -28,10 +29,28 @@ class _ProfileState extends State<Profile> {
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
                   ),
-                  color: Colors.blueGrey[400],
+                  color: Color(0xFF2F3D46), //Colors.blueGrey[400],
                 ),
-                child: Center(
-                  child: Text("Title Here"),
+                child: Stack(
+                  children: [
+                    Align(
+                      child: Text("Title Here",
+                          style: GoogleFonts.montserrat(
+                            fontSize: 18,
+                          )),
+                    ),
+                    Positioned(
+                      right: 7,
+                      top: 3,
+                      child: Text(
+                        "Edit",
+                        style: GoogleFonts.montserrat(
+                          fontSize: 18,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Container(
