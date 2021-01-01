@@ -12,82 +12,80 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  final BottomNavigationBar navBar =
-                      navBarGlobalKey.currentWidget;
-                  navBar.onTap(2);
-                  //final snackBar =
-                  //  SnackBar(content: Text("Clicked the Container!"));
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                final BottomNavigationBar navBar =
+                    navBarGlobalKey.currentWidget;
+                navBar.onTap(2);
+                //final snackBar =
+                //  SnackBar(content: Text("Clicked the Container!"));
 
-                  //Scaffold.of(context).showSnackBar(snackBar);
-                },
-                child: ContainerGraph(null),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Favorites",
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
+                //Scaffold.of(context).showSnackBar(snackBar);
+              },
+              child: ContainerGraph(null),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Favorites",
+                    style: Theme.of(context).textTheme.headline3,
                   ),
-                  // Swiper(
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     return Image.network(
-                  //       "http://via.placeholder.com/288x188",
-                  //       fit: BoxFit.fill,
-                  //     );
-                  //   },
-                  //   itemCount: 10,
-                  //   itemWidth: 188.0,
-                  //   itemHeight: 288.0,
-                  //   layout: SwiperLayout.STACK,
-                  // ),
-                  // Swiper(
-                  //     layout: SwiperLayout.CUSTOM,
-                  //     customLayoutOption:
-                  //         new CustomLayoutOption(startIndex: -1, stateCount: 3)
-                  //             .addRotate(
-                  //                 [-45.0 / 180, 0.0, 45.0 / 180]).addTranslate([
-                  //       new Offset(-370.0, -40.0),
-                  //       new Offset(0.0, 0.0),
-                  //       new Offset(370.0, -40.0)
-                  //     ]),
-                  //     pagination: SwiperPagination(),
-                  //     itemWidth: 300.0,
-                  //     itemHeight: 200.0,
-                  //     itemBuilder: (context, index) {
-                  //       return new Container(
-                  //         color: Colors.grey,
-                  //         child: new Center(
-                  //           child: new Text("$index"),
-                  //         ),
-                  //       );
-                  //     },
-                  //     itemCount: 10),
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      viewportFraction: 0.8,
-                      initialPage: 0,
-                      pageViewKey: PageStorageKey<String>('carousel_slider'),
-                      enableInfiniteScroll: false,
-                    ),
-                    items: getFavorites(context),
+                ),
+                // Swiper(
+                //   itemBuilder: (BuildContext context, int index) {
+                //     return Image.network(
+                //       "http://via.placeholder.com/288x188",
+                //       fit: BoxFit.fill,
+                //     );
+                //   },
+                //   itemCount: 10,
+                //   itemWidth: 188.0,
+                //   itemHeight: 288.0,
+                //   layout: SwiperLayout.STACK,
+                // ),
+                // Swiper(
+                //     layout: SwiperLayout.CUSTOM,
+                //     customLayoutOption:
+                //         new CustomLayoutOption(startIndex: -1, stateCount: 3)
+                //             .addRotate(
+                //                 [-45.0 / 180, 0.0, 45.0 / 180]).addTranslate([
+                //       new Offset(-370.0, -40.0),
+                //       new Offset(0.0, 0.0),
+                //       new Offset(370.0, -40.0)
+                //     ]),
+                //     pagination: SwiperPagination(),
+                //     itemWidth: 300.0,
+                //     itemHeight: 200.0,
+                //     itemBuilder: (context, index) {
+                //       return new Container(
+                //         color: Colors.grey,
+                //         child: new Center(
+                //           child: new Text("$index"),
+                //         ),
+                //       );
+                //     },
+                //     itemCount: 10),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    viewportFraction: 0.8,
+                    initialPage: 0,
+                    pageViewKey: PageStorageKey<String>('carousel_slider'),
+                    enableInfiniteScroll: false,
                   ),
-                ],
-              ),
-            ],
-          ),
+                  items: getFavorites(context),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -146,6 +144,7 @@ List<Widget> getFavorites(context) {
       list.add(
         Container(
           margin: EdgeInsets.symmetric(horizontal: 5.0),
+          width: MediaQuery.of(context).size.width,
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),

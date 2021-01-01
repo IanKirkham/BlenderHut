@@ -21,6 +21,8 @@ class _ContainerGraphState extends State<ContainerGraph> {
 
   var _selectedIndex;
 
+  void _selectionChanged(args) {}
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,6 +35,20 @@ class _ContainerGraphState extends State<ContainerGraph> {
         color: Color(0xFF2F3D46), //Colors.blueGrey[800],
       ),
       child: SfCartesianChart(
+        onDataLabelTapped: (DataLabelTapDetails args) async {
+          print("Index: ${args.pointIndex}");
+          print("Value: ${args.text}");
+          if (args.text == "0%") {
+            int res =
+                await widget.onBarSelected(context, data[args.pointIndex]);
+            print("Modal sheet closed with value: $res");
+            if (res != null) {
+              setState(() {
+                data[_selectedIndex].amount = res;
+              });
+            }
+          }
+        },
         onSelectionChanged: (SelectionArgs args) async {
           if (_selectedIndex == args.pointIndex) {
             _selectedIndex = null;
@@ -67,7 +83,7 @@ class _ContainerGraphState extends State<ContainerGraph> {
         ),
         // Chart title
         title: ChartTitle(
-          text: 'Containers',
+          text: widget.onBarSelected != null ? 'Fill Containers' : 'Containers',
           // alignment: ChartAlignment.near,
           textStyle: TextStyle(
             color: Colors.white,
