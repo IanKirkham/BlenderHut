@@ -13,6 +13,8 @@ class RecipeBuilder extends StatefulWidget {
 }
 
 class _RecipeBuilderState extends State<RecipeBuilder> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -20,6 +22,7 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("New Recipe"),
           centerTitle: true,
@@ -61,30 +64,44 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                     Column(
                       children: myChildren(5),
                     ),
-                    Container(
-                      height: MediaQuery.of(context).size.height / 8.5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(5),
-                          bottomRight: Radius.circular(5),
+                    GestureDetector(
+                      onTap: () => _dialogPopup(context).then((success) {
+                        if (success) {
+                          print("Success");
+                          final snackbar = SnackBar(
+                            content: Text("Successfully Added Ingredient"),
+                            backgroundColor: Color(0xFF48C28C),
+                          );
+                          _scaffoldKey.currentState.showSnackBar(snackbar);
+                        } else {
+                          print("Failure");
+                        }
+                      }),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 8.5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(5),
+                          ),
+                          color: Color(0xFF2F3D46),
                         ),
-                        color: Color(0xFF2F3D46),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add,
-                              size: 50,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              "Add New Ingredient",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ],
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                "Add New Ingredient",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -115,6 +132,104 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
         ),
       ),
     );
+  }
+
+  Future<bool> _dialogPopup(context) async {
+    bool success = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+          child: Dialog(
+            child: Container(
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.width * 0.75,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // TextField(
+                  //   controller: editingController,
+                  //   decoration: InputDecoration(
+                  //       labelText: "Ingredient",
+                  //       hintText: "Search",
+                  //       prefixIcon: Icon(Icons.search),
+                  //       border: OutlineInputBorder(
+                  //           borderRadius: BorderRadius.all(
+                  //               Radius.circular(5.0)))),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFieldWidget(
+                      obscureText: false,
+                      hintText: "Search",
+                      labelText: "Ingredient",
+                      prefixIconData: Icons.search,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFieldWidget(
+                      obscureText: false,
+                      hintText: "Search",
+                      labelText: "Amount",
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFieldWidget(
+                      obscureText: false,
+                      hintText: "Search",
+                      labelText: "Units",
+                      suffixIconData: Icons.arrow_circle_down,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MaterialButton(
+                        onPressed: () {
+                          // final snackBar = SnackBar(
+                          //     content:
+                          //         Text("Clicked the Container!"));
+
+                          // Scaffold.of(context)
+                          //     .showSnackBar(snackBar);
+                          Navigator.pop(context, true);
+                        },
+                        color: Color(0xFF48C28C), //Colors.green,
+                        child: Text(
+                          "Add",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                        ),
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                        color: Colors.red[400], //Colors.green,
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+    return success == null ? false : success;
   }
 
   // ListView myListView() {

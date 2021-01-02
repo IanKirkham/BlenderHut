@@ -20,16 +20,16 @@ class _LoginState extends State<Login> {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: Scaffold(
-        body: Container(
-          alignment: Alignment.center,
+        body: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(
-                  "BlenderHut",
-                  style: GoogleFonts.anton(
-                    fontSize: 75,
+                Container(
+                  child: Text(
+                    "BlenderHut",
+                    style: GoogleFonts.anton(
+                      fontSize: 75,
+                    ),
                   ),
                 ),
                 Padding(

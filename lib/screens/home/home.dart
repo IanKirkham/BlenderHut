@@ -1,5 +1,6 @@
 import 'package:blenderapp/widgets/containerGraph.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
@@ -10,6 +11,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _current = 0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -80,8 +83,22 @@ class _HomeState extends State<Home> {
                     initialPage: 0,
                     pageViewKey: PageStorageKey<String>('carousel_slider'),
                     enableInfiniteScroll: false,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _current = index;
+                      });
+                    },
                   ),
                   items: getFavorites(context),
+                ),
+                Center(
+                  child: DotsIndicator(
+                    dotsCount: 5,
+                    position: _current.toDouble(),
+                    decorator: DotsDecorator(
+                      activeColor: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             ),
