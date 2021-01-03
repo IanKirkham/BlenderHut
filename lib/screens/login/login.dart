@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../app.dart';
 
 class Login extends StatefulWidget {
-  final GlobalKey navBarGlobalKey;
-  Login(this.navBarGlobalKey);
+  //final GlobalKey navBarGlobalKey;
+  //Login(this.navBarGlobalKey);
 
   @override
   _LoginState createState() => _LoginState();
@@ -92,7 +92,8 @@ class _LoginState extends State<Login> {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  App(widget.navBarGlobalKey),
+                                  //App(widget.navBarGlobalKey),
+                                  App(),
                             ),
                           );
                         },

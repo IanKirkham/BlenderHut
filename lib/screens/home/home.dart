@@ -1,3 +1,5 @@
+import 'package:blenderapp/app.dart';
+import 'package:blenderapp/screens/fill/fill.dart';
 import 'package:blenderapp/widgets/containerGraph.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -21,18 +23,31 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: () {
-                final BottomNavigationBar navBar =
-                    navBarGlobalKey.currentWidget;
-                navBar.onTap(2);
-                //final snackBar =
-                //  SnackBar(content: Text("Clicked the Container!"));
+            // GestureDetector(
+            //   onTap: () {
+            //     final BottomNavigationBar navBar =
+            //         navBarGlobalKey.currentWidget;
+            //     navBar.onTap(2);
+            //     //final snackBar =
+            //     //  SnackBar(content: Text("Clicked the Container!"));
 
-                //Scaffold.of(context).showSnackBar(snackBar);
-              },
-              child: ContainerGraph(null),
-            ),
+            //     //Scaffold.of(context).showSnackBar(snackBar);
+            //   },
+            //   child: ContainerGraph(null),
+            // ),
+            GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => Fill(),
+                  //   ),
+                  // );
+                  final BottomNavigationBar navBar =
+                      navBarGlobalKey.currentWidget;
+                  navBar.onTap(2);
+                },
+                child: ContainerGraph(null)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -117,43 +132,44 @@ List<Widget> getFavorites(context) {
 
   if (false) {
     list.add(
-      GestureDetector(
-        onTap: () {
-          final BottomNavigationBar navBar = navBarGlobalKey.currentWidget;
-          navBar.onTap(1);
-          //final snackBar =
-          //  SnackBar(content: Text("Clicked the Container!"));
+      // GestureDetector(
+      //   onTap: () {
+      //     final BottomNavigationBar navBar = navBarGlobalKey.currentWidget;
+      //     navBar.onTap(1);
+      //     //final snackBar =
+      //     //  SnackBar(content: Text("Clicked the Container!"));
 
-          //Scaffold.of(context).showSnackBar(snackBar);
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width / 2,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "No favorites found",
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.center,
-              ),
-              Icon(
-                Icons.add,
-                size: MediaQuery.of(context).size.width / 4,
-                color: Colors.white,
-              ),
-              Text(
-                "Tap to add some favorites now!",
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Color(0xFF2F3D46), //Colors.blueGrey[700].withOpacity(0.5),
-          ),
+      //     //Scaffold.of(context).showSnackBar(snackBar);
+      //   },
+      //   child: Container(
+      Container(
+        width: MediaQuery.of(context).size.width / 2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "No favorites found",
+              style: Theme.of(context).textTheme.bodyText2,
+              textAlign: TextAlign.center,
+            ),
+            Icon(
+              Icons.add,
+              size: MediaQuery.of(context).size.width / 4,
+              color: Colors.white,
+            ),
+            Text(
+              "Tap to add some favorites now!",
+              style: Theme.of(context).textTheme.bodyText2,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Color(0xFF2F3D46), //Colors.blueGrey[700].withOpacity(0.5),
         ),
       ),
+      //),
     );
     return list;
   } else {

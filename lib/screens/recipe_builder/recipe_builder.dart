@@ -135,6 +135,8 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
   }
 
   Future<bool> _dialogPopup(context) async {
+    String unitDropDownValue = 'Cup';
+
     bool success = await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -143,9 +145,10 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
           child: Dialog(
+            backgroundColor: Color(0xFF2F3D46),
             child: Container(
               height: MediaQuery.of(context).size.height / 3,
-              width: MediaQuery.of(context).size.width * 0.75,
+              width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -168,22 +171,48 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                       prefixIconData: Icons.search,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFieldWidget(
-                      obscureText: false,
-                      hintText: "Search",
-                      labelText: "Amount",
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFieldWidget(
-                      obscureText: false,
-                      hintText: "Search",
-                      labelText: "Units",
-                      suffixIconData: Icons.arrow_circle_down,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        padding: EdgeInsets.all(8),
+                        child: TextFieldWidget(
+                          obscureText: false,
+                          hintText: "Number",
+                          labelText: "Amount",
+                        ),
+                      ),
+                      DropdownButton<String>(
+                        value: unitDropDownValue,
+                        icon: Icon(Icons.keyboard_arrow_down_outlined),
+                        iconSize: 26,
+                        elevation: 16,
+                        style: TextStyle(
+                            color: Colors.lightBlueAccent, fontSize: 18),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.lightBlueAccent,
+                        ),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            unitDropDownValue = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Cup',
+                          'Gram',
+                          'Ounce',
+                          'Tablespoon',
+                          'Mililiter',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

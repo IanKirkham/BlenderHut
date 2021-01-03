@@ -7,8 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../app.dart';
 
 class SplashScreen extends StatefulWidget {
-  final GlobalKey navBarGlobalKey;
-  SplashScreen(this.navBarGlobalKey);
+  //final GlobalKey navBarGlobalKey;
+  //SplashScreen(this.navBarGlobalKey);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (BuildContext context) => App(widget.navBarGlobalKey),
+        builder: (BuildContext context) => App(), //App(widget.navBarGlobalKey),
       ),
     );
   }
@@ -43,7 +43,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void _navigateToLogin() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (BuildContext context) => Login(widget.navBarGlobalKey),
+        builder: (BuildContext context) =>
+            Login(), //Login(widget.navBarGlobalKey),
       ),
     );
   }
