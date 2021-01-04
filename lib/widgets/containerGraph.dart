@@ -12,16 +12,20 @@ class ContainerGraph extends StatefulWidget {
 
 class _ContainerGraphState extends State<ContainerGraph> {
   List<ContainerData> data = [
-    ContainerData('Strawberry', 90, Color(0xfff25f5c)),
-    ContainerData('Banana', 75, Color(0xffffe066)),
-    ContainerData('Milk', 30, Colors.white),
-    ContainerData('Ice Cream', 100, Colors.orange[100]),
-    ContainerData('Peach', 15, Colors.red[200]),
+    ContainerData('L3 - Water', 90, Colors.blue[100]),
+    ContainerData('L2 - OJ', 25, Colors.orange[300]),
+    ContainerData('L1 - Milk', 30, Colors.white),
+    ContainerData('F6 - Strawberry', 90, Color(0xfff25f5c)),
+    ContainerData('F5 - Banana', 75, Color(0xffffe066)),
+    ContainerData('F4 - Ice Cream', 100, Colors.orange[100]),
+    ContainerData('F3 - Peach', 15, Colors.red[200]),
+    ContainerData('F2 - Raspberry', 100, Colors.pink[400]),
+    ContainerData('F1 - Empty', 0, Colors.transparent),
   ];
 
   var _selectedIndex;
 
-  void _selectionChanged(args) {}
+  // void _selectionChanged(args) {}
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,7 @@
-import 'package:blenderapp/custom_icons_icons.dart';
 import 'package:blenderapp/screens/recipe_builder/recipe_builder.dart';
-import 'package:blenderapp/screens/recipe_detail/recipe_detail.dart';
 import 'package:blenderapp/screens/recipe_list/recipe_tile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class RecipeList extends StatefulWidget {
   @override
@@ -83,7 +81,7 @@ class _RecipeListState extends State<RecipeList> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                       builder: (context) => RecipeBuilder(),
                     ),
                   );

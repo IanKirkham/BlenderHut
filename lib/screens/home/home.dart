@@ -1,11 +1,9 @@
 import 'package:blenderapp/app.dart';
-import 'package:blenderapp/screens/fill/fill.dart';
 import 'package:blenderapp/widgets/containerGraph.dart';
+import 'package:blenderapp/widgets/horizontalBarLabelChart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-
-import '../../main.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -47,7 +45,7 @@ class _HomeState extends State<Home> {
                       navBarGlobalKey.currentWidget;
                   navBar.onTap(2);
                 },
-                child: ContainerGraph(null)),
+                child: HorizontalBarLabelChart(null)), //ContainerGraph(null)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -124,7 +122,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-// TODO: make this dynamic by getting recipe objects from API, list of Recipe view widgets?
+// make this dynamic by getting recipe objects from API, list of Recipe view widgets?
 List<Widget> getFavorites(context) {
   List<Widget> list = [];
 

@@ -33,7 +33,7 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 30, horizontal: 25),
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
                 child: TextFieldWidget(
                   labelText: "(Title)",
                   hintText: "Enter a recipe title",
@@ -41,6 +41,14 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                   value: widget.title,
                 ),
               ),
+              Text(
+                "Swipe right to remove an ingredient",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Column(
@@ -108,21 +116,24 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.all(20),
-                child: MaterialButton(
-                  onPressed: () {
-                    // save to the database?
-                    Navigator.pop(context);
-                  },
-                  minWidth: MediaQuery.of(context).size.width / 3,
-                  height: MediaQuery.of(context).size.height / 17,
-                  color: Color(0xFF48C28C), //Colors.green,
-                  child: Text(
-                    "Create Recipe",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  child: MaterialButton(
+                    onPressed: () {
+                      // save to the database?
+                      Navigator.pop(context);
+                    },
+                    minWidth: MediaQuery.of(context).size.width / 3,
+                    height: MediaQuery.of(context).size.height / 17,
+                    color: Color(0xFF48C28C), //Colors.green,
+                    child: Text(
+                      "Create Recipe",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
                     ),
                   ),
                 ),

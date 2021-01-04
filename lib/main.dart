@@ -6,8 +6,6 @@ void main() {
   runApp(Main());
 }
 
-//GlobalKey navBarGlobalKey = GlobalKey(debugLabel: 'bottomAppBar');
-
 class Main extends StatefulWidget {
   @override
   _MainState createState() => _MainState();
@@ -17,7 +15,6 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //home: SplashScreen(navBarGlobalKey),
       home: SplashScreen(),
       theme: _theme(),
     );

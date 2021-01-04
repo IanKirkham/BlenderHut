@@ -1,4 +1,5 @@
 import 'package:blenderapp/widgets/tab_item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'screens/fill/fill.dart';
 import 'screens/home/home.dart';
@@ -8,9 +9,6 @@ import 'screens/recipe_list/recipe_list.dart';
 GlobalKey navBarGlobalKey = GlobalKey(debugLabel: 'bottomAppBar');
 
 class App extends StatefulWidget {
-  //GlobalKey navBarGlobalKey;
-  //App(this.navBarGlobalKey);
-
   @override
   _AppState createState() => _AppState();
 }
@@ -51,10 +49,10 @@ class _AppState extends State<App> {
     ),
   ];
 
-  PageController pageController = PageController(
-    initialPage: 0,
-    keepPage: true,
-  );
+  // PageController pageController = PageController(
+  //   initialPage: 0,
+  //   keepPage: true,
+  // );
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +142,7 @@ class _AppState extends State<App> {
 
   Widget _buildIndexedPageFlow(TabItem tabItem) => Navigator(
         key: tabItem.navigatorKey,
-        onGenerateRoute: (settings) => MaterialPageRoute(
+        onGenerateRoute: (settings) => CupertinoPageRoute(
           settings: settings,
           builder: (context) => tabItem.page,
         ),

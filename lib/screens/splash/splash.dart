@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:blenderapp/screens/login/login.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
+      CupertinoPageRoute(
         builder: (BuildContext context) => App(), //App(widget.navBarGlobalKey),
       ),
     );
@@ -42,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _navigateToLogin() {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
+      CupertinoPageRoute(
         builder: (BuildContext context) =>
             Login(), //Login(widget.navBarGlobalKey),
       ),

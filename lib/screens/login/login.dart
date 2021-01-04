@@ -1,5 +1,6 @@
 import 'package:blenderapp/widgets/buttonWidget.dart';
 import 'package:blenderapp/widgets/textFieldWidget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../app.dart';
@@ -90,7 +91,7 @@ class _LoginState extends State<Login> {
                           // add validation and checking with the api
                           // if successful:
                           Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
+                            CupertinoPageRoute(
                               builder: (BuildContext context) =>
                                   //App(widget.navBarGlobalKey),
                                   App(),
