@@ -1,56 +1,42 @@
 import 'package:flutter/material.dart';
 
-class TextFieldWidget extends StatefulWidget {
+class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final String labelText;
   final IconData prefixIconData;
   final IconData suffixIconData;
   final bool obscureText;
-  final Function onChanged;
-  final String value;
+  final Function validator;
+  final TextEditingController controller;
 
-  TextFieldWidget({
+  CustomTextFormField({
     this.hintText,
     this.prefixIconData,
     this.suffixIconData,
-    this.obscureText,
-    this.onChanged,
+    @required this.obscureText,
     this.labelText,
-    this.value,
+    this.validator,
+    this.controller,
   });
-
-  @override
-  _TextFieldWidgetState createState() => _TextFieldWidgetState();
-}
-
-class _TextFieldWidgetState extends State<TextFieldWidget> {
-  final textController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.value != null) {
-      textController.text = widget.value;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: widget.obscureText,
-      controller: textController,
+      obscureText: obscureText,
+      controller: controller,
+      validator: validator,
       style: TextStyle(
         color: Colors.lightBlueAccent,
         fontSize: 18.0,
       ),
       decoration: InputDecoration(
         prefixIcon: Icon(
-          widget.prefixIconData,
+          prefixIconData,
           size: 18,
           color: Colors.lightBlueAccent,
         ),
-        labelText: widget.labelText,
-        hintText: widget.hintText,
+        labelText: labelText,
+        hintText: hintText,
         // filled: true,
         // fillColor: Colors.blueGrey[900],
         enabledBorder: OutlineInputBorder(
@@ -62,7 +48,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           borderSide: BorderSide(color: Colors.lightBlueAccent),
         ),
         suffixIcon: Icon(
-          widget.suffixIconData,
+          suffixIconData,
           size: 18,
           color: Colors.lightBlueAccent,
         ),

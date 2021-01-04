@@ -87,6 +87,7 @@ router.post('/register', async (req, res) => {
   // Make sure that the form coming from the browser includes a username and a
   // passsword, otherwise return an error. A 400 error means the request was
   // malformed.
+
   if (!req.body.username || !req.body.password)
     return res.status(400).send({
       message: "Username and password are required"

@@ -9,6 +9,10 @@ const recipeSchema = new mongoose.Schema({
   title: String,
   ingredients: Array,
   amounts: Array,
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User"
+  },
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
@@ -60,6 +64,19 @@ router.put('/:id', async (req, res) => {
     return res.send({
       recipe: recipe
     });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
+// delete a recipe
+router.delete('/:id', async (req, res) => {
+  try {
+    await Recipe.findOneAndDelete({
+      _id: req.params.id
+    });
+    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);

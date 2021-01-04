@@ -24,7 +24,7 @@ class IngredientTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.delete, size: 40, color: Colors.white),
-                Text("Delete"),
+                Text("Remove"),
               ],
             ),
           ),
