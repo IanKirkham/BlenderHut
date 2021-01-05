@@ -4,15 +4,10 @@ import 'package:flutter/material.dart';
 import '../../custom_icons_icons.dart';
 import 'ingredient_tile.dart';
 
-class RecipeBuilder extends StatefulWidget {
+class RecipeBuilder extends StatelessWidget {
   final String title;
   RecipeBuilder({this.title});
 
-  @override
-  _RecipeBuilderState createState() => _RecipeBuilderState();
-}
-
-class _RecipeBuilderState extends State<RecipeBuilder> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -38,7 +33,7 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                   labelText: "(Title)",
                   hintText: "Enter a recipe title",
                   obscureText: false,
-                  value: widget.title,
+                  value: title,
                 ),
               ),
               Text(
@@ -116,26 +111,44 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                   ],
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  margin: EdgeInsets.all(20),
-                  child: MaterialButton(
-                    onPressed: () {
-                      // save to the database?
-                      Navigator.pop(context);
-                    },
-                    minWidth: MediaQuery.of(context).size.width / 3,
-                    height: MediaQuery.of(context).size.height / 17,
-                    color: Color(0xFF48C28C), //Colors.green,
-                    child: Text(
-                      "Create Recipe",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
+              Container(
+                margin: EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    MaterialButton(
+                      onPressed: () {
+                        // save to the database?
+                        Navigator.pop(context);
+                      },
+                      // minWidth: MediaQuery.of(context).size.width / 3,
+                      height: MediaQuery.of(context).size.height / 17,
+                      color: Colors.red, //Colors.green,
+                      child: Text(
+                        "Delete Recipe",
+                        style: TextStyle(
+                          color: Colors.white,
+                          // fontSize: 24,
+                        ),
                       ),
                     ),
-                  ),
+                    MaterialButton(
+                      onPressed: () {
+                        // save to the database?
+                        Navigator.pop(context);
+                      },
+                      //minWidth: MediaQuery.of(context).size.width / 3,
+                      height: MediaQuery.of(context).size.height / 17,
+                      color: Color(0xFF48C28C), //Colors.green,
+                      child: Text(
+                        "Create Recipe",
+                        style: TextStyle(
+                          color: Colors.white,
+                          // fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -206,9 +219,7 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                           color: Colors.lightBlueAccent,
                         ),
                         onChanged: (String newValue) {
-                          setState(() {
-                            unitDropDownValue = newValue;
-                          });
+                          unitDropDownValue = newValue;
                         },
                         items: <String>[
                           'Cup',
@@ -230,25 +241,6 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                     children: [
                       MaterialButton(
                         onPressed: () {
-                          // final snackBar = SnackBar(
-                          //     content:
-                          //         Text("Clicked the Container!"));
-
-                          // Scaffold.of(context)
-                          //     .showSnackBar(snackBar);
-                          Navigator.pop(context, true);
-                        },
-                        color: Color(0xFF48C28C), //Colors.green,
-                        child: Text(
-                          "Add",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                          ),
-                        ),
-                      ),
-                      MaterialButton(
-                        onPressed: () {
                           Navigator.pop(context, false);
                         },
                         color: Colors.red[400], //Colors.green,
@@ -256,7 +248,18 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                           "Cancel",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 24,
+                          ),
+                        ),
+                      ),
+                      MaterialButton(
+                        onPressed: () {
+                          Navigator.pop(context, true);
+                        },
+                        color: Color(0xFF48C28C), //Colors.green,
+                        child: Text(
+                          "Add",
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
                         ),
                       ),

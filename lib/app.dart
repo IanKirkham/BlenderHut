@@ -15,12 +15,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   int _currentIndex = 0;
-  // final tabs = [
-  //   Home(),
-  //   RecipeList(),
-  //   Fill(),
-  //   Profile(),
-  // ];
 
   final List<TabItem> tabItems = [
     TabItem(
@@ -49,38 +43,13 @@ class _AppState extends State<App> {
     ),
   ];
 
-  // PageController pageController = PageController(
-  //   initialPage: 0,
-  //   keepPage: true,
-  // );
-
   @override
   Widget build(BuildContext context) {
     final currentTab = tabItems[_currentIndex];
-    // return MaterialApp(
-    //   home:
     return WillPopScope(
       onWillPop: () async =>
           !await currentTab.navigatorKey.currentState.maybePop(),
       child: Scaffold(
-        // body: PageView(
-        //   controller: pageController,
-        //   onPageChanged: (index) {
-        //     setState(
-        //       () {
-        //         _currentIndex = index;
-        //       },
-        //     );
-        //   },
-        //   children: tabs,
-        // ),
-        // body: Navigator(
-        //   key: currentTab.navigatorKey,
-        //   onGenerateRoute: (settings) => MaterialPageRoute(
-        //     settings: settings,
-        //     builder: (context) => Home(),
-        //   ),
-        // ),
         body: IndexedStack(
           index: _currentIndex,
           children: tabItems
@@ -90,28 +59,8 @@ class _AppState extends State<App> {
               .toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          //key: widget.navBarGlobalKey,
-          // key: navBarGlobalKey,
           key: navBarGlobalKey,
           currentIndex: _currentIndex,
-          // items: [
-          //   BottomNavigationBarItem(
-          //     icon: Icon(Icons.home),
-          //     label: 'Home',
-          //   ),
-          //   BottomNavigationBarItem(
-          //     icon: Icon(Icons.view_module),
-          //     label: 'All Recipes',
-          //   ),
-          //   BottomNavigationBarItem(
-          //     icon: Icon(Icons.addchart),
-          //     label: 'Fill Containers',
-          //   ),
-          //   BottomNavigationBarItem(
-          //     icon: Icon(Icons.person),
-          //     label: 'Profile',
-          //   ),
-          // ],
           items: tabItems
               .map(
                 (item) => BottomNavigationBarItem(
@@ -129,9 +78,6 @@ class _AppState extends State<App> {
                   currentTab.navigatorKey.currentState
                       .popUntil((route) => route.isFirst);
                 }
-                //pageController.animateToPage(index,
-                //    duration: Duration(milliseconds: 500), curve: Curves.ease);
-                //pageController.jumpToPage(index);
               },
             );
           },

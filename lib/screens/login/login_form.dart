@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:blenderapp/api_calls.dart';
 import 'package:blenderapp/screens/login/customButtonWidget.dart';
 import 'package:blenderapp/screens/login/customTextFormField.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app.dart';
 
@@ -16,12 +19,14 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final userEmailTextController = TextEditingController();
   final userPasswordTextController = TextEditingController();
+  bool isLoading;
 
   @override
   void initState() {
     super.initState();
     userEmailTextController.text = "ian@gmail.com";
     userPasswordTextController.text = "123";
+    isLoading = false;
   }
 
   @override
@@ -30,6 +35,12 @@ class _LoginFormState extends State<LoginForm> {
       key: _formKey,
       child: Column(
         children: [
+          Opacity(
+              opacity: isLoading ? 1.0 : 0.0,
+              child: CircularProgressIndicator()),
+          SizedBox(
+            height: 10,
+          ),
           CustomTextFormField(
             labelText: 'Email',
             obscureText: false,
@@ -79,23 +90,30 @@ class _LoginFormState extends State<LoginForm> {
             hasBorder: false,
             formKey: _formKey,
             onPressed: () async {
+              setState(() => isLoading = true);
               http.Response response = await loginUser(
                   userEmailTextController.text,
                   userPasswordTextController.text);
 
               if (response.statusCode == 200) {
-                // Save user in shared preferences?
+                final SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                sharedPreferences.setString(
+                    'email', userEmailTextController.text);
                 Navigator.of(context).pushReplacement(
                   CupertinoPageRoute(
-                    builder: (BuildContext context) =>
-                        //App(widget.navBarGlobalKey),
-                        App(),
+                    builder: (BuildContext context) => App(),
                   ),
                 );
               } else {
-                // somehow make a widget to show loading and error messages
-                print("${response.body}");
+                Map<String, dynamic> json = jsonDecode(response.body);
+                final snackbar = SnackBar(
+                  content: Text("${json["message"]}"),
+                  backgroundColor: Colors.red[400],
+                );
+                Scaffold.of(context).showSnackBar(snackbar);
               }
+              setState(() => isLoading = false);
             },
           ),
           SizedBox(
@@ -106,27 +124,31 @@ class _LoginFormState extends State<LoginForm> {
             hasBorder: true,
             formKey: _formKey,
             onPressed: () async {
+              setState(() => isLoading = true);
               http.Response response = await registerUser(
                   userEmailTextController.text,
                   userPasswordTextController.text);
 
               if (response.statusCode == 200) {
-                // Save user in shared preferences?
+                final SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                sharedPreferences.setString(
+                    'email', userEmailTextController.text);
                 Navigator.of(context).pushReplacement(
                   CupertinoPageRoute(
-                    builder: (BuildContext context) =>
-                        //App(widget.navBarGlobalKey),
-                        App(),
+                    builder: (BuildContext context) => App(),
                   ),
                 );
               } else {
-                // somehow make a widget to show loading and error messages
-                print("${response.body}");
+                Map<String, dynamic> json = jsonDecode(response.body);
+                final snackbar = SnackBar(
+                  content: Text("${json["message"]}"),
+                  backgroundColor: Colors.red[400],
+                );
+                Scaffold.of(context).showSnackBar(snackbar);
               }
+              setState(() => isLoading = false);
             },
-          ),
-          SizedBox(
-            height: 10,
           ),
         ],
       ),

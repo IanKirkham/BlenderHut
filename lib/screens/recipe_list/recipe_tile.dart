@@ -1,14 +1,15 @@
 import 'package:blenderapp/custom_icons_icons.dart';
 import 'package:blenderapp/screens/recipe_builder/recipe_builder.dart';
 import 'package:blenderapp/screens/recipe_detail/recipe_detail.dart';
+import 'package:blenderapp/screens/recipe_list/ingredient_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RecipeTile extends StatefulWidget {
   final int index;
-  var _recipes;
-  var _isFavorited;
+  final _recipes;
+  final _isFavorited;
   RecipeTile(this.index, this._recipes, this._isFavorited);
 
   @override
@@ -16,6 +17,8 @@ class RecipeTile extends StatefulWidget {
 }
 
 class _RecipeTileState extends State<RecipeTile> {
+  static const MAX_TILE_WIDTH = 0.9;
+
   @override
   Widget build(BuildContext context) {
     // return ListView.builder(
@@ -85,9 +88,7 @@ class _RecipeTileState extends State<RecipeTile> {
             ),
             Container(
               height: MediaQuery.of(context).size.height / 8,
-              width: MediaQuery.of(context).size.width *
-                  0.90, // Change 0.80 to a constant, used to calculate inside container widths
-              // also change 5 to a constant, just use the number of ingredients in a recipe
+              width: MediaQuery.of(context).size.width * MAX_TILE_WIDTH,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -97,95 +98,40 @@ class _RecipeTileState extends State<RecipeTile> {
               ),
               child: Row(
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width * 0.9 / 5,
+                  IngredientSection(
+                    icon: CustomIcons.peach,
+                    amount: "1 cup",
                     color: Colors.red[200],
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(CustomIcons.peach, size: 40),
-                        Text(
-                          "1 cup",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
+                    width: MAX_TILE_WIDTH,
+                    ratio: 5,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width * 0.9 / 5,
+                  IngredientSection(
+                    icon: CustomIcons.ice_cream,
+                    amount: "3/4 cup",
                     color: Colors.orange[100],
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(CustomIcons.ice_cream, size: 40),
-                        Text(
-                          "3/4 cup",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
+                    width: MAX_TILE_WIDTH,
+                    ratio: 5,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width * 0.9 / 5,
+                  IngredientSection(
+                    icon: CustomIcons.milk,
+                    amount: "2 cups",
                     color: Colors.white,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(CustomIcons.milk, size: 40),
-                        Text(
-                          "2 cups",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
+                    width: MAX_TILE_WIDTH,
+                    ratio: 5,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width * 0.9 / 5,
+                  IngredientSection(
+                    icon: CustomIcons.bananas,
+                    amount: "1/2 cup",
                     color: Color(0xffffe066),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(CustomIcons.bananas, size: 40),
-                        Text(
-                          "1/2 cup",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
+                    width: MAX_TILE_WIDTH,
+                    ratio: 5,
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width * 0.9 / 5,
+                  IngredientSection(
+                    icon: CustomIcons.strawberry,
+                    amount: "1 cup",
                     color: Color(0xfff25f5c),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(CustomIcons.strawberry, size: 40),
-                        Text(
-                          "1 cup",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
+                    width: MAX_TILE_WIDTH,
+                    ratio: 5,
                   ),
                 ],
               ),

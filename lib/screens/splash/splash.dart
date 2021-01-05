@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:blenderapp/screens/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../app.dart';
+
+String finalEmail;
 
 class SplashScreen extends StatefulWidget {
   //final GlobalKey navBarGlobalKey;
@@ -17,18 +22,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _checkForAuthentication().then((status) {
-      if (status) {
-        _navigateToHome();
-      } else {
-        _navigateToLogin();
-      }
+    _checkForAuthentication().whenComplete(() async {
+      Timer(Duration(seconds: 1),
+          () => finalEmail == null ? _navigateToLogin() : _navigateToHome());
     });
   }
 
-  Future<bool> _checkForAuthentication() async {
-    await Future.delayed(Duration(milliseconds: 5000), () {});
-    return false; // In the future, this will check shared preferences to see if a user is logged in or not.
+  Future _checkForAuthentication() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    var obtainedEmail = sharedPreferences.getString('email');
+    setState(() {
+      finalEmail = obtainedEmail;
+    });
   }
 
   void _navigateToHome() {
@@ -62,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               //textAlign: TextAlign.center,
             ),
-            SpinKitFoldingCube(
+            SpinKitDualRing(
               color: Colors.white,
               size: MediaQuery.of(context).size.width / 4,
             ),

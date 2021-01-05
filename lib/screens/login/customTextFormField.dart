@@ -30,6 +30,14 @@ class CustomTextFormField extends StatelessWidget {
         fontSize: 18.0,
       ),
       decoration: InputDecoration(
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: BorderSide(color: Colors.red),
+        ),
         prefixIcon: Icon(
           prefixIconData,
           size: 18,

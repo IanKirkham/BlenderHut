@@ -14,54 +14,9 @@ class _RecipeListState extends State<RecipeList> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('My Recipes', style: Theme.of(context).textTheme.headline4),
-    //   ),
-    //   floatingActionButton: FloatingActionButton(
-    //     child: Icon(Icons.add, size: 35),
-    //     onPressed: () {
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(
-    //           builder: (context) => RecipeBuilder(),
-    //         ),
-    //       );
-    //     },
-    //   ),
-    //   body: Recipes(),
-    // );
     return SafeArea(
       child: CustomScrollView(
         slivers: [
-          // SliverAppBar(
-          //   backgroundColor: Color(0xFF2F3D46),
-          //   expandedHeight: MediaQuery.of(context).size.height / 8,
-          //   // floating: true,
-          //   // pinned: true,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     title: Text('My Recipes'),
-          //     centerTitle: true,
-          //   ),
-          //   actions: <Widget>[
-          //     IconButton(
-          //       icon: Icon(
-          //         Icons.add,
-          //         color: Colors.lightBlueAccent,
-          //         size: 40,
-          //       ),
-          //       tooltip: 'Add new recipe',
-          //       onPressed: () {
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) => RecipeBuilder(),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ],
-          // ),
           SliverAppBar(
             snap: true,
             forceElevated: true,

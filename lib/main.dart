@@ -26,7 +26,7 @@ class _MainState extends State<Main> {
         backgroundColor: Colors.lightBlueAccent,
       ),
       appBarTheme: AppBarTheme(
-        color: Color(0xFF1F2C34), //Colors.blueGrey[900],
+        color: Color(0xFF1F2C34),
         elevation: 0,
       ),
       textTheme: TextTheme(
@@ -50,11 +50,11 @@ class _MainState extends State<Main> {
           fontSize: 14,
         ),
       ),
-      scaffoldBackgroundColor: Color(0xFF1F2C34), //Colors.blueGrey[900],
+      scaffoldBackgroundColor: Color(0xFF1F2C34),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Color(0xFF2F3D46), //Colors.blueGrey[900],
+        backgroundColor: Color(0xFF2F3D46),
         selectedItemColor: Colors.white,
-        unselectedItemColor: Color(0xFF788388), //Colors.blueGrey[600],
+        unselectedItemColor: Color(0xFF788388),
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         elevation: 10,

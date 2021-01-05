@@ -7,8 +7,6 @@ const router = express.Router();
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
-  recipes: Array,
-  favorites: Array,
 });
 
 // This is a hook that will be called before a user record is saved,

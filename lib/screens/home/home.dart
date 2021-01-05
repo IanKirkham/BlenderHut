@@ -1,5 +1,4 @@
 import 'package:blenderapp/app.dart';
-import 'package:blenderapp/widgets/containerGraph.dart';
 import 'package:blenderapp/widgets/horizontalBarLabelChart.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -21,31 +20,15 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // GestureDetector(
-            //   onTap: () {
-            //     final BottomNavigationBar navBar =
-            //         navBarGlobalKey.currentWidget;
-            //     navBar.onTap(2);
-            //     //final snackBar =
-            //     //  SnackBar(content: Text("Clicked the Container!"));
-
-            //     //Scaffold.of(context).showSnackBar(snackBar);
-            //   },
-            //   child: ContainerGraph(null),
-            // ),
             GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => Fill(),
-                  //   ),
-                  // );
-                  final BottomNavigationBar navBar =
-                      navBarGlobalKey.currentWidget;
-                  navBar.onTap(2);
-                },
-                child: HorizontalBarLabelChart(null)), //ContainerGraph(null)),
+              onTap: () {
+                final BottomNavigationBar navBar =
+                    navBarGlobalKey.currentWidget;
+                navBar.onTap(2);
+              },
+              //child: ContainerGraph(null),
+              child: HorizontalBarLabelChart(null),
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -56,40 +39,6 @@ class _HomeState extends State<Home> {
                     style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
-                // Swiper(
-                //   itemBuilder: (BuildContext context, int index) {
-                //     return Image.network(
-                //       "http://via.placeholder.com/288x188",
-                //       fit: BoxFit.fill,
-                //     );
-                //   },
-                //   itemCount: 10,
-                //   itemWidth: 188.0,
-                //   itemHeight: 288.0,
-                //   layout: SwiperLayout.STACK,
-                // ),
-                // Swiper(
-                //     layout: SwiperLayout.CUSTOM,
-                //     customLayoutOption:
-                //         new CustomLayoutOption(startIndex: -1, stateCount: 3)
-                //             .addRotate(
-                //                 [-45.0 / 180, 0.0, 45.0 / 180]).addTranslate([
-                //       new Offset(-370.0, -40.0),
-                //       new Offset(0.0, 0.0),
-                //       new Offset(370.0, -40.0)
-                //     ]),
-                //     pagination: SwiperPagination(),
-                //     itemWidth: 300.0,
-                //     itemHeight: 200.0,
-                //     itemBuilder: (context, index) {
-                //       return new Container(
-                //         color: Colors.grey,
-                //         child: new Center(
-                //           child: new Text("$index"),
-                //         ),
-                //       );
-                //     },
-                //     itemCount: 10),
                 CarouselSlider(
                   options: CarouselOptions(
                     viewportFraction: 0.8,
