@@ -6,7 +6,7 @@ const router = express.Router();
 
 const ingredientSchema = new mongoose.Schema({
   name: String,
-  color: String,
+  color: Number,
   icon: Number,
 });
 

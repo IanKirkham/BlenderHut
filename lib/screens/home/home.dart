@@ -10,8 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _current = 0;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,34 +37,52 @@ class _HomeState extends State<Home> {
                     style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
-                CarouselSlider(
-                  options: CarouselOptions(
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    pageViewKey: PageStorageKey<String>('carousel_slider'),
-                    enableInfiniteScroll: false,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _current = index;
-                      });
-                    },
-                  ),
-                  items: getFavorites(context),
-                ),
-                Center(
-                  child: DotsIndicator(
-                    dotsCount: 5,
-                    position: _current.toDouble(),
-                    decorator: DotsDecorator(
-                      activeColor: Colors.white,
-                    ),
-                  ),
-                ),
+                MyCustomCarosel(),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class MyCustomCarosel extends StatefulWidget {
+  @override
+  _MyCustomCaroselState createState() => _MyCustomCaroselState();
+}
+
+class _MyCustomCaroselState extends State<MyCustomCarosel> {
+  int _current = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
+            viewportFraction: 0.8,
+            initialPage: 0,
+            pageViewKey: PageStorageKey<String>('carousel_slider'),
+            enableInfiniteScroll: false,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            },
+          ),
+          items: getFavorites(context),
+        ),
+        Center(
+          child: DotsIndicator(
+            dotsCount: 5,
+            position: _current.toDouble(),
+            decorator: DotsDecorator(
+              activeColor: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

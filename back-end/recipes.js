@@ -9,7 +9,11 @@ const Ingredient = ingredients.model;
 
 const recipeSchema = new mongoose.Schema({
   title: String,
-  ingredients: [{type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient'}],
+  ingredients: [{
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Ingredient'
+    }
+  ],
   amounts: [Number],
   units: [String],
   user: {

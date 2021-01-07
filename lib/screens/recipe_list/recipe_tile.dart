@@ -24,6 +24,7 @@ class _RecipeTileState extends State<RecipeTile> {
     // return ListView.builder(
     //   itemCount: 10,
     //   itemBuilder: (context, index) {
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -120,7 +121,7 @@ class _RecipeTileState extends State<RecipeTile> {
                     ratio: 5,
                   ),
                   IngredientSection(
-                    icon: CustomIcons.bananas,
+                    icon: CustomIcons.banana,
                     amount: "1/2 cup",
                     color: Color(0xffffe066),
                     width: MAX_TILE_WIDTH,

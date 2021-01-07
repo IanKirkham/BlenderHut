@@ -5,8 +5,10 @@ class IngredientTile extends StatelessWidget {
   final String ingredient;
   final Color color;
   final String amount;
+  final String unit;
 
-  IngredientTile(this.iconData, this.ingredient, this.color, this.amount);
+  IngredientTile(
+      this.iconData, this.ingredient, this.color, this.amount, this.unit);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class IngredientTile extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          subtitle: Text("$amount"),
+          subtitle: Text("$amount $unit"),
           // trailing: Icon(Icons.remove_circle_outline),
         ),
       ),
