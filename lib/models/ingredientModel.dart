@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class IngredientModel {
   String id;
   String name;

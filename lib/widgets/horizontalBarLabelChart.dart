@@ -3,7 +3,6 @@ import 'package:blenderapp/models/containerData.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class HorizontalBarLabelChart extends StatefulWidget {
-  //final List<charts.Series> seriesList;
   final Function(BuildContext, ContainerData) onBarSelected;
   HorizontalBarLabelChart(this.onBarSelected);
 

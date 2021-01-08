@@ -242,8 +242,11 @@ class MyCustomDialog extends StatefulWidget {
 }
 
 class _MyCustomDialogState extends State<MyCustomDialog> {
-  String unitDropDownValue = 'Cup';
-  int _currentValue = 1;
+  //String unitDropDownValue = 'Cup';
+  //int _currentValue = 1;
+  List<dynamic> _amountList;
+  List<int> _pickerIndex;
+  String currentIngredient;
 
   @override
   Widget build(BuildContext context) {
@@ -292,8 +295,13 @@ class _MyCustomDialogState extends State<MyCustomDialog> {
                   "Tunisia"
                 ],
                 label: "Menu mode",
-                onChanged: print,
+                onChanged: (newValue) {
+                  setState(() {
+                    currentIngredient = newValue;
+                  });
+                },
                 showSearchBox: true,
+                autoFocusSearchBox: true,
                 popupBackgroundColor: Colors.green,
                 popupTitle: Center(child: Text("Ingredients")),
                 popupShape: RoundedRectangleBorder(
@@ -321,6 +329,10 @@ class _MyCustomDialogState extends State<MyCustomDialog> {
                   }
                 },
                 dropdownSearchDecoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
                   prefixIcon: Icon(Icons.ac_unit),
                   filled: true,
                   fillColor: Colors.pink,
@@ -341,114 +353,31 @@ class _MyCustomDialogState extends State<MyCustomDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Container(
-                //   width: MediaQuery.of(context).size.width * 0.45,
-                //   padding: EdgeInsets.all(8),
-                //   child: TextFieldWidget(
-                //     obscureText: false,
-                //     hintText: "Number",
-                //     labelText: "Amount",
-                //   ),
-                // ),
-                RaisedButton(
-                  color: Colors.purple,
-                  child: Text("Select Amount"),
-                  onPressed: () {
-                    Picker(
-                      backgroundColor: Colors.yellow,
-                      adapter: PickerDataAdapter(data: [
-                        new PickerItem(
-                            text: Icon(Icons.add),
-                            value: Icons.add,
-                            children: [
-                              new PickerItem(text: Icon(Icons.more)),
-                              new PickerItem(text: Icon(Icons.aspect_ratio)),
-                              new PickerItem(text: Icon(Icons.android)),
-                              new PickerItem(text: Icon(Icons.menu)),
-                            ]),
-                        new PickerItem(
-                            text: Icon(Icons.title),
-                            value: Icons.title,
-                            children: [
-                              new PickerItem(text: Icon(Icons.more_vert)),
-                              new PickerItem(text: Icon(Icons.ac_unit)),
-                              new PickerItem(text: Icon(Icons.access_alarm)),
-                              new PickerItem(text: Icon(Icons.account_balance)),
-                            ]),
-                        new PickerItem(
-                            text: Icon(Icons.face),
-                            value: Icons.face,
-                            children: [
-                              new PickerItem(
-                                  text: Icon(Icons.add_circle_outline)),
-                              new PickerItem(text: Icon(Icons.add_a_photo)),
-                              new PickerItem(text: Icon(Icons.access_time)),
-                              new PickerItem(text: Icon(Icons.adjust)),
-                            ]),
-                        new PickerItem(
-                            text: Icon(Icons.linear_scale),
-                            value: Icons.linear_scale,
-                            children: [
-                              new PickerItem(text: Icon(Icons.assistant_photo)),
-                              new PickerItem(text: Icon(Icons.account_balance)),
-                              new PickerItem(
-                                  text: Icon(Icons.airline_seat_legroom_extra)),
-                              new PickerItem(text: Icon(Icons.airport_shuttle)),
-                              new PickerItem(
-                                  text: Icon(Icons.settings_bluetooth)),
-                            ]),
-                        new PickerItem(
-                            text: Icon(Icons.close), value: Icons.close),
-                      ]),
-                      delimiter: [
-                        PickerDelimiter(
-                            child: Container(
-                          width: 30.0,
-                          alignment: Alignment.center,
-                          child: Icon(Icons.more_vert),
-                        ))
-                      ],
-                      // hideHeader: true,
-                      title: new Text(
-                        "Please Select",
-                        style: TextStyle(color: Colors.black),
+                _amountList == null
+                    ? RaisedButton(
+                        color: Colors.lightBlue[100],
+                        child: Text("Select Amount"),
+                        onPressed: () {
+                          showAmountPicker(context, _pickerIndex);
+                        },
+                      )
+                    : GestureDetector(
+                        child: Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            color: Colors.grey,
+                          ),
+                          child: Text(
+                            formatAmountText(),
+                          ),
+                        ),
+                        onTap: () {
+                          showAmountPicker(context, _pickerIndex);
+                        },
                       ),
-                      height: MediaQuery.of(context).size.height / 3,
-                      onConfirm: (Picker picker, List value) {
-                        print(value.toString());
-                        print(picker.getSelectedValues());
-                      },
-                    ).showModal(context);
-                  },
-                ),
-                DropdownButton<String>(
-                  value: unitDropDownValue,
-                  icon: Icon(Icons.keyboard_arrow_down_outlined),
-                  iconSize: 26,
-                  elevation: 16,
-                  style: TextStyle(color: Colors.lightBlueAccent, fontSize: 18),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.lightBlueAccent,
-                  ),
-                  onChanged: (newValue) {
-                    setState(() {
-                      unitDropDownValue = newValue;
-                    });
-                  },
-                  items: <String>[
-                    'Cup',
-                    'Gram',
-                    'Ounce',
-                    'Tablespoon',
-                    'Mililiter',
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
               ],
             ),
             Row(
@@ -466,10 +395,14 @@ class _MyCustomDialogState extends State<MyCustomDialog> {
                     ),
                   ),
                 ),
-                MaterialButton(
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
+                RaisedButton(
+                  onPressed: currentIngredient == null || _amountList == null
+                      ? null
+                      : () => Navigator.pop(context, true),
+                  disabledColor: Colors.grey,
+                  // onPressed: () {
+                  //   Navigator.pop(context, true);
+                  // },
                   color: Color(0xFF48C28C), //Colors.green,
                   child: Text(
                     "Add",
@@ -484,5 +417,82 @@ class _MyCustomDialogState extends State<MyCustomDialog> {
         ),
       ),
     );
+  }
+
+  String formatAmountText() {
+    String finalString = "";
+
+    if (_amountList[0] == "0" && _amountList[1] != "0") {
+      finalString = _amountList[1] + " " + _amountList[2];
+    } else if (_amountList[0] != "0" && _amountList[1] == "0") {
+      if (_amountList[0] == "1") {
+        finalString = _amountList[0] + " " + _amountList[2];
+      } else {
+        finalString = _amountList[0] + " " + _amountList[2] + "s";
+      }
+    } else {
+      finalString = _amountList[0] +
+          " and " +
+          _amountList[1] +
+          " " +
+          _amountList[2] +
+          "s";
+    }
+    return finalString;
+  }
+
+  void showAmountPicker(BuildContext context, selectedList) {
+    Picker(
+      backgroundColor: Color(0xFF2F3D46),
+      selecteds: selectedList,
+      adapter: PickerDataAdapter<String>(
+        pickerdata: [
+          List<int>.generate(26, (i) => i),
+          ["0", "1/4", "1/2", "3/4"],
+          [
+            "Cup",
+            "Tablespoon",
+            "Ounce",
+            "Gram",
+            "Milimeter",
+          ]
+        ],
+        isArray: true,
+      ),
+      headerDecoration: BoxDecoration(
+        color: Colors.lightBlueAccent,
+      ),
+      textScaleFactor: 1.5,
+      textStyle: TextStyle(color: Colors.white),
+      confirmTextStyle: TextStyle(color: Colors.greenAccent),
+      cancelTextStyle: TextStyle(color: Colors.redAccent),
+      title: new Text(
+        "Ingredients",
+        style: TextStyle(color: Colors.white),
+      ),
+      height: MediaQuery.of(context).size.height / 3,
+      onConfirm: (Picker picker, List value) {
+        //print(value.toString());
+        //print(picker.getSelectedValues());
+
+        if (picker == null) {
+          return;
+        }
+
+        var currList = picker.getSelectedValues();
+
+        if (currList[0] == "0" && currList[1] == "0") {
+          // do not do anything if values are 0. In the future, change this to error message
+        } else {
+          setState(() {
+            _pickerIndex = value;
+            _amountList = picker.getSelectedValues();
+          });
+        }
+      },
+      onCancel: () {
+        print("Picker was canceled");
+      },
+    ).showModal(context);
   }
 }
