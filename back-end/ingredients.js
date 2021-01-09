@@ -15,7 +15,21 @@ const Ingredient = mongoose.model('Ingredient', ingredientSchema);
 
 /* API Endpoints */
 
-// Get an ingredient
+// Get all ingreidents
+router.get('/', async (req, res) => {
+  let ingredients = [];
+  try {
+    ingredients = await Ingredient.find({});
+    return res.send(
+      ingredients
+    );
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
+// Get a single ingredient
 router.get('/:id', async (req, res) => {
   try {
     const ingredient = await Ingredient.findOne({

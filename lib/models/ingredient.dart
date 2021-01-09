@@ -1,12 +1,12 @@
-class IngredientModel {
+class Ingredient {
   String id;
   String name;
   int iconCode;
   int colorValue;
 
-  IngredientModel({this.id, this.name, this.iconCode, this.colorValue});
+  Ingredient({this.id, this.name, this.iconCode, this.colorValue});
 
-  IngredientModel.fromJson(Map<String, dynamic> json) {
+  Ingredient.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     name = json['name'];
     iconCode = json['icon_code'];
@@ -21,4 +21,11 @@ class IngredientModel {
     data['color_value'] = this.colorValue;
     return data;
   }
+
+  bool isEqual(Ingredient model) {
+    return this?.id == model?.id;
+  }
+
+  @override
+  String toString() => name;
 }

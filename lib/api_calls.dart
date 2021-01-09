@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import 'models/ingredient.dart';
 
 //const TIMEOUT = 5;
 
@@ -66,4 +69,17 @@ Future<http.Response> editRecipe(recipe) async {
 Future<http.Response> deleteRecipe(recipe) async {
   var url = BASE_API_URL + 'recipes/delete/' + recipe.id;
   return await http.delete(url);
+}
+
+// Get a list of all ingredients
+Future<List<Ingredient>> getIngredientList() async {
+  var url = BASE_API_URL + 'ingredients';
+  http.Response response = await http.get(url);
+  List<Ingredient> list = [];
+  if (response.statusCode == 200) {
+    var parsedJson = jsonDecode(response.body);
+    list =
+        (parsedJson as List).map((item) => Ingredient.fromJson(item)).toList();
+  }
+  return list;
 }
