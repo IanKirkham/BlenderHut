@@ -14,7 +14,7 @@ const recipeSchema = new mongoose.Schema({
       ref: 'Ingredient'
     }
   ],
-  amounts: [Number],
+  amounts: [String],
   units: [String],
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,24 +30,24 @@ const Recipe = mongoose.model('Recipe', recipeSchema);
 
 // var myRecipe = new Recipe({
 //   title: "Example Recipe 1",
-//   ingredients: ["Strawberry", "Peach", "Milk", "Banana", "Ice Cream"],
+//   ingredients: ["5ff6703c0e68452ed40566bf", "5ff6703c0e68452ed40566bd", "5ff6703c0e68452ed40566b0", "5ff6703c0e68452ed40566c4", "5ff6703c0e68452ed40566b6"],
 //   amounts: ["1", "3", "1/2", "3/4", "2"],
 //   units: ["cup", "cups", "cup", "cup", "cups"],
-//   user: ,
+//   user: "5ff3bb147cc8a527d8d5396b",
 //   favorite: false,
 // });
 // myRecipe.save();
 
 // get recipes -- will list recipes that a user has created
-router.get('/:username', async (req, res) => {
+router.get('/:user', async (req, res) => {
   let recipes = [];
   try {
     recipes = await Recipe.find({
-      username: req.params.username
-    });
-    return res.send({
-      recipes: recipes
-    });
+      user: req.params.user
+    }).populate('ingredients');
+    //let ingredientList = await recipes["ingredients"].map((ingredient) => {Ingredient.findById({_id: ingredient})}).toList();
+    //recipes["ingredients"] = ingredientList;
+    return res.send(recipes);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
@@ -81,10 +81,10 @@ router.put('/edit/:id', async (req, res) => {
     var recipe = await Recipe.findOne({
       _id: req.params.id
     });
-    recipe.title = req.body.title;
-    recipe.ingredients = req.body.ingredients;
-    recipe.amounts = req.body.amounts;
-    recipe.units = req.body.units;
+    recipe["title"] = req.body.title;
+    recipe["ingredients"] = req.body.ingredients;
+    recipe["amounts"] = req.body.amounts;
+    recipe["units"] = req.body.units;
     await recipe.save();
     return res.send({
       recipe: recipe

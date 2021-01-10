@@ -1,33 +1,33 @@
 import 'package:flutter/cupertino.dart';
 
-class RecipeModel {
+class Recipe {
   String title;
-  List<String> ingredients;
-  List<double> amounts;
-  List<String> units;
-  String username;
+  List ingredients;
+  List amounts;
+  List units;
+  String user;
   bool favorite;
-  int id;
+  String id;
 
-  RecipeModel({
+  Recipe({
     @required this.title,
     @required this.ingredients,
     @required this.amounts,
     @required this.units,
-    @required this.username,
+    @required this.user,
     @required this.favorite,
     @required this.id,
   });
 
   // Convert from json
-  RecipeModel.fromJson(Map<String, dynamic> json)
+  Recipe.fromJson(Map<String, dynamic> json)
       : title = json['title'],
         ingredients = json['ingredients'],
         amounts = json['amounts'],
         units = json['units'],
-        username = json['username'],
+        user = json['user'],
         favorite = json['favorite'],
-        id = json['id'];
+        id = json['_id'];
 
   // Convert to json
   Map<String, dynamic> toJson() => {
@@ -35,8 +35,8 @@ class RecipeModel {
         'ingredients': ingredients,
         'amounts': amounts,
         'units': units,
-        'username': username,
+        'user': user,
         'favorite': favorite,
-        'id': id,
+        '_id': id,
       };
 }

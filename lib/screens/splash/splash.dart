@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../app.dart';
 
-String finalEmail;
+String currentUser;
 
 class SplashScreen extends StatefulWidget {
   //final GlobalKey navBarGlobalKey;
@@ -24,16 +24,16 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _checkForAuthentication().whenComplete(() async {
       Timer(Duration(seconds: 1),
-          () => finalEmail == null ? _navigateToLogin() : _navigateToHome());
+          () => currentUser == null ? _navigateToLogin() : _navigateToHome());
     });
   }
 
   Future _checkForAuthentication() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
-    var obtainedEmail = sharedPreferences.getString('email');
+    var user = sharedPreferences.getString('user');
     setState(() {
-      finalEmail = obtainedEmail;
+      currentUser = user;
     });
   }
 

@@ -19,7 +19,7 @@ class _ProfileState extends State<Profile> {
           onPressed: () async {
             final SharedPreferences sharedPreferences =
                 await SharedPreferences.getInstance();
-            sharedPreferences.remove('email');
+            sharedPreferences.remove('user');
             Navigator.of(context, rootNavigator: true).pushReplacement(
               CupertinoPageRoute(
                 builder: (context) => Login(),

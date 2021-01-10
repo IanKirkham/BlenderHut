@@ -71,9 +71,7 @@ router.get('/:id', async (req, res) => {
       });
     }
     // return user
-    return res.send({
-      user: user
-    });
+    return res.send(user);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
@@ -110,9 +108,7 @@ router.post('/register', async (req, res) => {
     });
     await user.save();
     // send back a 200 OK response, along with the user that was created
-    return res.send({
-      user: user
-    });
+    return res.send(user);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);
@@ -145,9 +141,7 @@ router.post('/login', async (req, res) => {
       });
 
     // return user
-    return res.send({
-      user: user
-    });
+    return res.send(user);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);

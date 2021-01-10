@@ -1,14 +1,18 @@
+import 'package:blenderapp/models/ingredient.dart';
 import 'package:flutter/material.dart';
 
 class IngredientTile extends StatelessWidget {
-  final IconData iconData;
-  final String ingredient;
-  final Color color;
+  // final IconData iconData;
+  // final String ingredient;
+  // final Color color;
+  final Ingredient ingredient;
   final String amount;
   final String unit;
 
-  IngredientTile(
-      this.iconData, this.ingredient, this.color, this.amount, this.unit);
+  // IngredientTile(
+  //     {this.iconData, this.ingredient, this.color, this.amount, this.unit});
+
+  IngredientTile({this.ingredient, this.amount, this.unit});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +38,13 @@ class IngredientTile extends StatelessWidget {
       ),
       child: Container(
         padding: EdgeInsets.all(15),
-        color: this.color,
+        color: Color(ingredient.colorValue),
         child: ListTile(
-          leading: Icon(this.iconData, size: 40),
+          leading: Icon(
+              IconData(ingredient.iconCode, fontFamily: 'CustomIcons'),
+              size: 40),
           title: Text(
-            "$ingredient",
+            "${ingredient.name}",
             style: TextStyle(
               color: Colors.black,
               fontSize: 20,

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'models/ingredient.dart';
+import 'models/recipe.dart';
 
 //const TIMEOUT = 5;
 
@@ -36,9 +37,15 @@ Future<http.Response> registerUser(username, password) async {
 }
 
 // Get recipes
-Future<http.Response> getRecipes(username) async {
-  var url = BASE_API_URL + 'recipes/' + username;
-  return await http.get(url);
+Future<List<Recipe>> getRecipes(user) async {
+  var url = BASE_API_URL + 'recipes/' + user;
+  var response = await http.get(url);
+  List<Recipe> list = [];
+  if (response.statusCode == 200) {
+    var json = jsonDecode(response.body);
+    list = (json as List).map((item) => Recipe.fromJson(item)).toList();
+  }
+  return list;
 }
 
 // Create a recipe
@@ -82,4 +89,12 @@ Future<List<Ingredient>> getIngredientList() async {
         (parsedJson as List).map((item) => Ingredient.fromJson(item)).toList();
   }
   return list;
+}
+
+// Get a specific ingredient
+Future<Ingredient> getIngredient(id) async {
+  var url = BASE_API_URL + 'ingredients/' + id;
+  http.Response response = await http.get(url);
+  var json = jsonDecode(response.body);
+  return Ingredient.fromJson(json);
 }

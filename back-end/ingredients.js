@@ -40,9 +40,7 @@ router.get('/:id', async (req, res) => {
         message: "Could not find ingredient"
       });
     }
-    return res.send({
-      ingredient: ingredient
-    });
+    return res.send(ingredient);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);

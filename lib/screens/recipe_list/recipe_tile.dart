@@ -1,4 +1,5 @@
-import 'package:blenderapp/custom_icons_icons.dart';
+import 'package:blenderapp/models/ingredient.dart';
+import 'package:blenderapp/models/recipe.dart';
 import 'package:blenderapp/screens/recipe_builder/recipe_builder.dart';
 import 'package:blenderapp/screens/recipe_detail/recipe_detail.dart';
 import 'package:blenderapp/screens/recipe_list/ingredient_section.dart';
@@ -7,10 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RecipeTile extends StatefulWidget {
-  final int index;
-  final _recipes;
-  final _isFavorited;
-  RecipeTile(this.index, this._recipes, this._isFavorited);
+  final Recipe recipe;
+  RecipeTile(this.recipe);
 
   @override
   _RecipeTileState createState() => _RecipeTileState();
@@ -21,16 +20,13 @@ class _RecipeTileState extends State<RecipeTile> {
 
   @override
   Widget build(BuildContext context) {
-    // return ListView.builder(
-    //   itemCount: 10,
-    //   itemBuilder: (context, index) {
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           CupertinoPageRoute(
-            builder: (context) => RecipeDetail(widget._recipes[widget.index]),
+            builder: (context) =>
+                RecipeDetail(widget.recipe.id), //_recipes[widget.index]),
           ),
         );
       },
@@ -54,16 +50,20 @@ class _RecipeTileState extends State<RecipeTile> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: (widget._isFavorited[widget.index]
+                    icon: (widget.recipe.favorite //_isFavorited[widget.index]
                         ? Icon(Icons.favorite, color: Colors.pinkAccent)
                         : Icon(Icons.favorite_border, color: Colors.grey)),
                     onPressed: () => setState(() {
-                      widget._isFavorited[widget.index] =
-                          !widget._isFavorited[widget.index];
+                      // TODO add api call to edit the recipe 'favorite' field
+
+                      widget.recipe.favorite = //_isFavorited[widget.index] =
+                          !widget.recipe.favorite;
+                      //_isFavorited[widget.index];
                     }),
                   ),
                   Align(
-                    child: Text("Title Here", style: GoogleFonts.montserrat()),
+                    child: Text(widget.recipe.title,
+                        style: GoogleFonts.montserrat()),
                   ),
                   GestureDetector(
                     child: Text(
@@ -78,8 +78,9 @@ class _RecipeTileState extends State<RecipeTile> {
                       Navigator.push(
                         context,
                         CupertinoPageRoute(
-                          builder: (context) =>
-                              RecipeBuilder(title: "Recipe ${widget.index}"),
+                          builder: (context) => RecipeBuilder(
+                            recipe: widget.recipe,
+                          ), //index}"),
                         ),
                       );
                     },
@@ -98,77 +99,74 @@ class _RecipeTileState extends State<RecipeTile> {
                 ),
               ),
               child: Row(
-                children: [
-                  IngredientSection(
-                    icon: CustomIcons.peach,
-                    amount: "1 cup",
-                    color: Colors.red[200],
-                    width: MAX_TILE_WIDTH,
-                    ratio: 5,
-                  ),
-                  IngredientSection(
-                    icon: CustomIcons.ice_cream,
-                    amount: "3/4 cup",
-                    color: Colors.orange[100],
-                    width: MAX_TILE_WIDTH,
-                    ratio: 5,
-                  ),
-                  IngredientSection(
-                    icon: CustomIcons.milk,
-                    amount: "2 cups",
-                    color: Colors.white,
-                    width: MAX_TILE_WIDTH,
-                    ratio: 5,
-                  ),
-                  IngredientSection(
-                    icon: CustomIcons.banana,
-                    amount: "1/2 cup",
-                    color: Color(0xffffe066),
-                    width: MAX_TILE_WIDTH,
-                    ratio: 5,
-                  ),
-                  IngredientSection(
-                    icon: CustomIcons.strawberry,
-                    amount: "1 cup",
-                    color: Color(0xfff25f5c),
-                    width: MAX_TILE_WIDTH,
-                    ratio: 5,
-                  ),
-                ],
+                children: getIngredientSections(),
               ),
+              // child: FutureBuilder(
+              //     future: getIngredientSections(),
+              //     builder: (context, snapshot) {
+              //       return CircularProgressIndicator();
+              //     }),
+              // child: Row(
+              //   children: getIngredientSections(),
+              // ),
+              // children: [
+              //   IngredientSection(
+              //     icon: CustomIcons.peach,
+              //     amount: "1 cup",
+              //     color: Colors.red[200],
+              //     width: MAX_TILE_WIDTH,
+              //     ratio: 5,
+              //   ),
+              //   IngredientSection(
+              //     icon: CustomIcons.ice_cream,
+              //     amount: "3/4 cup",
+              //     color: Colors.orange[100],
+              //     width: MAX_TILE_WIDTH,
+              //     ratio: 5,
+              //   ),
+              //   IngredientSection(
+              //     icon: CustomIcons.milk,
+              //     amount: "2 cups",
+              //     color: Colors.white,
+              //     width: MAX_TILE_WIDTH,
+              //     ratio: 5,
+              //   ),
+              //   IngredientSection(
+              //     icon: CustomIcons.banana,
+              //     amount: "1/2 cup",
+              //     color: Color(0xffffe066),
+              //     width: MAX_TILE_WIDTH,
+              //     ratio: 5,
+              //   ),
+              //   IngredientSection(
+              //     icon: CustomIcons.strawberry,
+              //     amount: "1 cup",
+              //     color: Color(0xfff25f5c),
+              //     width: MAX_TILE_WIDTH,
+              //     ratio: 5,
+              //   ),
+              // ],
             ),
+            //),
           ],
         ),
       ),
     );
     //   },
     // );
+  }
 
-    // return ListView.builder(
-    //   itemCount: _recipes.length,
-    //   itemBuilder: (context, index) {
-    //     return ListTile(
-    //       leading: IconButton(
-    //           icon: (_isFavorited[index]
-    //               ? Icon(Icons.favorite, color: Colors.pinkAccent, size: 30)
-    //               : Icon(Icons.favorite_border, color: Colors.grey, size: 30)),
-    //           onPressed: () => setState(() {
-    //                 _isFavorited[index] = !_isFavorited[index];
-    //               })),
-    //       title: Text(
-    //         _recipes[index],
-    //         style: TextStyle(color: Colors.white),
-    //       ),
-    //       subtitle: Text("subtext"),
-    //       onTap: () {
-    //         Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //               builder: (context) => RecipeDetail(_recipes[index])),
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
+  List<IngredientSection> getIngredientSections() {
+    List<IngredientSection> list = [];
+    var count = widget.recipe.ingredients.length;
+    for (int i = 0; i < count; i++) {
+      list.add(IngredientSection(
+        ingredient: Ingredient.fromJson(widget.recipe.ingredients[i]),
+        amount: "${widget.recipe.amounts[i]} ${widget.recipe.units[i]}",
+        width: MAX_TILE_WIDTH,
+        totalCount: count,
+      ));
+    }
+    return list;
   }
 }

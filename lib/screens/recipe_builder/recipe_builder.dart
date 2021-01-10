@@ -1,13 +1,16 @@
+import 'package:blenderapp/models/ingredient.dart';
+import 'package:blenderapp/models/recipe.dart';
 import 'package:blenderapp/screens/recipe_builder/newIngredientDialog.dart';
 import 'package:blenderapp/widgets/textFieldWidget.dart';
 import 'package:flutter/material.dart';
-
-import '../../custom_icons_icons.dart';
 import 'ingredient_tile.dart';
 
 class RecipeBuilder extends StatelessWidget {
-  final String title;
-  RecipeBuilder({this.title});
+  // final String title;
+  // RecipeBuilder({this.title});
+
+  final Recipe recipe;
+  RecipeBuilder({this.recipe});
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -34,7 +37,7 @@ class RecipeBuilder extends StatelessWidget {
                   labelText: "(Title)",
                   hintText: "Enter a recipe title",
                   obscureText: false,
-                  value: title,
+                  value: recipe != null ? recipe.title : null,
                 ),
               ),
               Text(
@@ -65,9 +68,11 @@ class RecipeBuilder extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Column(
-                      children: myChildren(5),
-                    ),
+                    recipe != null
+                        ? Column(
+                            children: popuplateIngredients(),
+                          )
+                        : SizedBox.shrink(),
                     GestureDetector(
                       onTap: () => _dialogPopup(context).then((success) {
                         if (success) {
@@ -129,7 +134,7 @@ class RecipeBuilder extends StatelessWidget {
                       height: MediaQuery.of(context).size.height / 17,
                       color: Colors.red, //Colors.green,
                       child: Text(
-                        "Delete Recipe",
+                        recipe != null ? "Delete Recipe" : "Discard Changes",
                         style: TextStyle(
                           color: Colors.white,
                           // fontSize: 24,
@@ -145,7 +150,7 @@ class RecipeBuilder extends StatelessWidget {
                       height: MediaQuery.of(context).size.height / 17,
                       color: Color(0xFF48C28C), //Colors.green,
                       child: Text(
-                        "Create Recipe",
+                        recipe != null ? "Save Changes" : "Create Recipe",
                         style: TextStyle(
                           color: Colors.white,
                           // fontSize: 24,
@@ -177,52 +182,55 @@ class RecipeBuilder extends StatelessWidget {
     return success == null ? false : success;
   }
 
-  // TODO: myChildren will take in a recipe id and make an api call to get the ingredients for that recipe
-  List<IngredientTile> myChildren(iterations) {
+  List<IngredientTile> popuplateIngredients() {
     List<IngredientTile> list = [];
-
-    for (int i = 0; i < iterations; i++) {
+    int count = recipe.ingredients.length;
+    for (int i = 0; i < count; i++) {
+      // list.add(IngredientTile(
+      //     icons[i], ingredients[i], colors[i], amounts[i], units[i]));
       list.add(IngredientTile(
-          icons[i], ingredients[i], colors[i], amounts[i], units[i]));
+        ingredient: Ingredient.fromJson(recipe.ingredients[i]),
+        amount: recipe.amounts[i],
+        unit: recipe.units[i],
+      ));
     }
-
     return list;
   }
 
   // Mock Data
-  final List<IconData> icons = [
-    CustomIcons.peach,
-    CustomIcons.ice_cream,
-    CustomIcons.milk,
-    CustomIcons.banana,
-    CustomIcons.strawberry,
-  ];
-  final List<String> ingredients = [
-    "Peach",
-    "Ice Cream",
-    "Milk",
-    "Banana",
-    "Strawberry",
-  ];
-  final List<Color> colors = [
-    Colors.red[200],
-    Colors.orange[100],
-    Colors.white,
-    Color(0xffffe066),
-    Color(0xfff25f5c),
-  ];
-  final List<String> amounts = [
-    "1",
-    "3/4",
-    "2",
-    "1/2",
-    "1",
-  ];
-  final List<String> units = [
-    "cup",
-    "cup",
-    "cups",
-    "cup",
-    "cup",
-  ];
+  // final List<IconData> icons = [
+  //   CustomIcons.peach,
+  //   CustomIcons.ice_cream,
+  //   CustomIcons.milk,
+  //   CustomIcons.banana,
+  //   CustomIcons.strawberry,
+  // ];
+  // final List<String> ingredients = [
+  //   "Peach",
+  //   "Ice Cream",
+  //   "Milk",
+  //   "Banana",
+  //   "Strawberry",
+  // ];
+  // final List<Color> colors = [
+  //   Colors.red[200],
+  //   Colors.orange[100],
+  //   Colors.white,
+  //   Color(0xffffe066),
+  //   Color(0xfff25f5c),
+  // ];
+  // final List<String> amounts = [
+  //   "1",
+  //   "3/4",
+  //   "2",
+  //   "1/2",
+  //   "1",
+  // ];
+  // final List<String> units = [
+  //   "cup",
+  //   "cup",
+  //   "cups",
+  //   "cup",
+  //   "cup",
+  // ];
 }

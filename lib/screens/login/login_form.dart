@@ -95,18 +95,18 @@ class _LoginFormState extends State<LoginForm> {
                   userEmailTextController.text,
                   userPasswordTextController.text);
 
+              Map<String, dynamic> json = jsonDecode(response.body);
+
               if (response.statusCode == 200) {
                 final SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
-                sharedPreferences.setString(
-                    'email', userEmailTextController.text);
+                sharedPreferences.setString('user', json["_id"]);
                 Navigator.of(context).pushReplacement(
                   CupertinoPageRoute(
                     builder: (BuildContext context) => App(),
                   ),
                 );
               } else {
-                Map<String, dynamic> json = jsonDecode(response.body);
                 final snackbar = SnackBar(
                   content: Text("${json["message"]}"),
                   backgroundColor: Colors.red[400],
@@ -129,18 +129,18 @@ class _LoginFormState extends State<LoginForm> {
                   userEmailTextController.text,
                   userPasswordTextController.text);
 
+              Map<String, dynamic> json = jsonDecode(response.body);
+
               if (response.statusCode == 200) {
                 final SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
-                sharedPreferences.setString(
-                    'email', userEmailTextController.text);
+                sharedPreferences.setString('user', json["_id"]);
                 Navigator.of(context).pushReplacement(
                   CupertinoPageRoute(
                     builder: (BuildContext context) => App(),
                   ),
                 );
               } else {
-                Map<String, dynamic> json = jsonDecode(response.body);
                 final snackbar = SnackBar(
                   content: Text("${json["message"]}"),
                   backgroundColor: Colors.red[400],
