@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:blenderapp/api_calls.dart';
+import 'package:blenderapp/apiService.dart';
 import 'package:blenderapp/screens/login/customButtonWidget.dart';
-import 'package:blenderapp/screens/login/customTextFormField.dart';
+import 'package:blenderapp/widgets/customTextFormField.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

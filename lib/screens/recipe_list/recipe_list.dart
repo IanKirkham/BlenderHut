@@ -1,4 +1,4 @@
-import 'package:blenderapp/api_calls.dart';
+import 'package:blenderapp/apiService.dart';
 import 'package:blenderapp/models/recipe.dart';
 import 'package:blenderapp/screens/recipe_builder/recipe_builder.dart';
 import 'package:blenderapp/screens/recipe_list/recipe_tile.dart';

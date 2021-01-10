@@ -1,9 +1,10 @@
 import 'package:blenderapp/models/ingredient.dart';
+import 'package:blenderapp/screens/recipe_builder/ingredient_tile.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
-import '../../api_calls.dart';
+import '../../apiService.dart';
 
 class NewIngredientDialog extends StatefulWidget {
   @override
@@ -20,18 +21,24 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
     return Dialog(
       backgroundColor: Color(0xFF2F3D46),
       child: Container(
-        height: MediaQuery.of(context).size.height / 3,
-        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.45,
+        width: MediaQuery.of(context).size.width * 0.9,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
+              margin: EdgeInsets.all(12),
+              child: Text(
+                "Add New Ingredient",
+                style: TextStyle(fontSize: 30),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(12),
               child: DropdownSearch<Ingredient>(
                 mode: Mode.BOTTOM_SHEET,
                 showSelectedItem: true,
                 onFind: (filter) => getIngredientList(),
-                label: "Select Ingredient",
                 onChanged: (newIngredient) {
                   setState(() {
                     currentIngredient = newIngredient;
@@ -41,7 +48,7 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                 compareFn: (Ingredient i, Ingredient s) => i.isEqual(s),
                 //itemAsString: (Ingredient i) => i.ingredientAsString(),
                 showSearchBox: true,
-                autoFocusSearchBox: true,
+                //autoFocusSearchBox: true,
                 popupBackgroundColor: Color(0xFF2F3D46),
                 popupTitle: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -79,7 +86,8 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                 },
                 dropdownBuilder: (context, selectedItem, itemAsString) {
                   if (currentIngredient == null) {
-                    return Text("Select Ingredient");
+                    return Text("Select Ingredient",
+                        style: TextStyle(color: Colors.black, fontSize: 20));
                   }
                   return Text(selectedItem.name,
                       style: TextStyle(color: Colors.black));
@@ -98,7 +106,7 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                           size: 32),
                   filled: true,
                   fillColor: currentIngredient == null
-                      ? Colors.grey[400]
+                      ? Colors.lightBlue[100]
                       : Color(currentIngredient.colorValue),
                 ),
                 emptyBuilder: (context, string) {
@@ -114,42 +122,52 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                 },
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _amountList == null
-                    ? RaisedButton(
-                        color: Colors.lightBlue[100],
-                        child: Text("Select Amount"),
-                        onPressed: () {
-                          showAmountPicker(context, _pickerIndex);
-                        },
-                      )
-                    : GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                            color: Colors.grey,
-                          ),
-                          child: Text(
-                            formatAmountText(),
-                          ),
-                        ),
-                        onTap: () {
-                          showAmountPicker(context, _pickerIndex);
-                        },
+            _amountList == null
+                ? Container(
+                    height: MediaQuery.of(context).size.height / 10,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    margin: EdgeInsets.all(12),
+                    child: RaisedButton(
+                      color: Colors.lightBlue[100],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-              ],
-            ),
+                      child: Text(
+                        "Select Amount",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        showAmountPicker(context, _pickerIndex);
+                      },
+                    ),
+                  )
+                : GestureDetector(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 10,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      margin: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        color: Colors.lightBlue,
+                      ),
+                      child: Center(
+                        child: Text(
+                          formatAmountText(),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      showAmountPicker(context, _pickerIndex);
+                    },
+                  ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                MaterialButton(
+                RaisedButton(
                   onPressed: () {
-                    Navigator.pop(context, false);
+                    Navigator.pop(context, null);
                   },
                   color: Colors.red[400], //Colors.green,
                   child: Text(
@@ -162,7 +180,14 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                 RaisedButton(
                   onPressed: currentIngredient == null || _amountList == null
                       ? null
-                      : () => Navigator.pop(context, true),
+                      : () => Navigator.pop(
+                            context,
+                            IngredientTile(
+                              ingredient: currentIngredient,
+                              amount: formatAmountText(),
+                              unit: "",
+                            ),
+                          ),
                   disabledColor: Colors.grey,
                   // onPressed: () {
                   //   Navigator.pop(context, true);
@@ -218,7 +243,7 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
             "Tablespoon",
             "Ounce",
             "Gram",
-            "Milimeter",
+            "Mililiter",
           ]
         ],
         isArray: true,

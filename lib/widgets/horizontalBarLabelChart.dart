@@ -4,7 +4,8 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 class HorizontalBarLabelChart extends StatefulWidget {
   final Function(BuildContext, ContainerData) onBarSelected;
-  HorizontalBarLabelChart(this.onBarSelected);
+  final String title;
+  HorizontalBarLabelChart(this.onBarSelected, {this.title = "Containers"});
 
   @override
   _HorizontalBarLabelChartState createState() =>
@@ -39,7 +40,7 @@ class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
       ),
       child: Column(
         children: [
-          Text("Containers"),
+          Text(widget.title),
           Expanded(
             child: charts.BarChart(
               seriesList,

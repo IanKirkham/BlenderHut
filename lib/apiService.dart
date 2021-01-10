@@ -6,7 +6,6 @@ import 'models/ingredient.dart';
 import 'models/recipe.dart';
 
 //const TIMEOUT = 5;
-
 const EMULATOR_IP = "10.0.2.2";
 const PC_IP = "192.168.1.3";
 

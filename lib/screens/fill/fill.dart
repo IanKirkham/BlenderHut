@@ -10,7 +10,7 @@ class Fill extends StatelessWidget {
       child: Column(
         children: [
           //ContainerGraph(_sliderPopup),
-          HorizontalBarLabelChart(_sliderPopup),
+          HorizontalBarLabelChart(_sliderPopup, title: "Fill Containers"),
         ],
       ),
     );

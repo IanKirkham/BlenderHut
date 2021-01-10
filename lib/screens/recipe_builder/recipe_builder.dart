@@ -1,18 +1,34 @@
 import 'package:blenderapp/models/ingredient.dart';
 import 'package:blenderapp/models/recipe.dart';
 import 'package:blenderapp/screens/recipe_builder/newIngredientDialog.dart';
-import 'package:blenderapp/widgets/textFieldWidget.dart';
+import 'package:blenderapp/widgets/customTextFormField.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'ingredient_tile.dart';
 
-class RecipeBuilder extends StatelessWidget {
-  // final String title;
-  // RecipeBuilder({this.title});
-
+class RecipeBuilder extends StatefulWidget {
   final Recipe recipe;
   RecipeBuilder({this.recipe});
 
+  @override
+  _RecipeBuilderState createState() => _RecipeBuilderState();
+}
+
+class _RecipeBuilderState extends State<RecipeBuilder> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final titleTextController = TextEditingController();
+  List<IngredientTile> ingredientTiles;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.recipe != null
+        ? ingredientTiles = popuplateIngredients()
+        : ingredientTiles = new List<IngredientTile>();
+    widget.recipe != null
+        ? titleTextController.text = widget.recipe.title
+        : titleTextController.text = "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +49,10 @@ class RecipeBuilder extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-                child: TextFieldWidget(
-                  labelText: "(Title)",
-                  hintText: "Enter a recipe title",
+                child: CustomTextFormField(
                   obscureText: false,
-                  value: recipe != null ? recipe.title : null,
+                  labelText: "Title",
+                  controller: titleTextController,
                 ),
               ),
               Text(
@@ -68,17 +83,43 @@ class RecipeBuilder extends StatelessWidget {
                         ),
                       ),
                     ),
-                    recipe != null
-                        ? Column(
-                            children: popuplateIngredients(),
-                          )
-                        : SizedBox.shrink(),
+                    Column(
+                      children: ingredientTiles.map((tile) {
+                        return Dismissible(
+                          key: UniqueKey(),
+                          direction: DismissDirection.endToStart,
+                          dragStartBehavior: DragStartBehavior.down,
+                          onDismissed: (direction) =>
+                              ingredientTiles.remove(tile),
+                          background: Container(
+                            color: Colors.red,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.delete,
+                                        size: 40, color: Colors.white),
+                                    Text("Remove"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          child: tile,
+                        );
+                      }).toList(), //popuplateIngredients(),
+                    ),
                     GestureDetector(
-                      onTap: () => _dialogPopup(context).then((success) {
-                        if (success) {
+                      onTap: () => _dialogPopup(context).then((data) {
+                        if (data != null) {
                           print("Pushed added ingredient");
-
                           // add logic for adding to the list
+                          setState(() {
+                            ingredientTiles.add(data);
+                          });
 
                           final snackbar = SnackBar(
                             content: Text("Successfully Added Ingredient"),
@@ -127,14 +168,35 @@ class RecipeBuilder extends StatelessWidget {
                   children: [
                     MaterialButton(
                       onPressed: () {
-                        // save to the database?
-                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                                widget.recipe == null
+                                    ? 'Are you sure you want to discard recipe?'
+                                    : 'Are you sure you want to delete recipe?',
+                                style: TextStyle(color: Colors.black)),
+                            actions: [
+                              RaisedButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(false)),
+                              RaisedButton(
+                                  child: Text('Yes'),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true)),
+                            ],
+                          ),
+                        ).then((shouldPop) =>
+                            shouldPop ? Navigator.pop(context) : null);
                       },
                       // minWidth: MediaQuery.of(context).size.width / 3,
                       height: MediaQuery.of(context).size.height / 17,
-                      color: Colors.red, //Colors.green,
+                      color: Colors.red[400], //Colors.green,
                       child: Text(
-                        recipe != null ? "Delete Recipe" : "Discard Changes",
+                        widget.recipe != null
+                            ? "Delete Recipe"
+                            : "Discard Recipe",
                         style: TextStyle(
                           color: Colors.white,
                           // fontSize: 24,
@@ -143,14 +205,35 @@ class RecipeBuilder extends StatelessWidget {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        // save to the database?
-                        Navigator.pop(context);
+                        if (titleTextController.text == "") {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text("Recipe must have a title"),
+                          ));
+                        } else if (ingredientTiles.length < 1) {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                                "Recipe must contain at least one ingredient"),
+                          ));
+                        } else {
+                          print(ingredientTiles.length);
+                          if (widget.recipe == null) {
+                            // create new recipe in the database
+
+                          } else {
+                            // modify existing recipe in the database
+
+                          }
+                          Navigator.pop(context);
+                        }
                       },
-                      //minWidth: MediaQuery.of(context).size.width / 3,
                       height: MediaQuery.of(context).size.height / 17,
                       color: Color(0xFF48C28C), //Colors.green,
                       child: Text(
-                        recipe != null ? "Save Changes" : "Create Recipe",
+                        widget.recipe != null
+                            ? "Save Changes"
+                            : "Create Recipe",
                         style: TextStyle(
                           color: Colors.white,
                           // fontSize: 24,
@@ -167,8 +250,8 @@ class RecipeBuilder extends StatelessWidget {
     );
   }
 
-  Future<bool> _dialogPopup(context) async {
-    bool success = await showDialog<bool>(
+  Future<IngredientTile> _dialogPopup(context) async {
+    IngredientTile data = await showDialog<IngredientTile>(
       context: context,
       builder: (context) {
         return GestureDetector(
@@ -179,58 +262,22 @@ class RecipeBuilder extends StatelessWidget {
         );
       },
     );
-    return success == null ? false : success;
+    return data;
+    //return success == null ? false : success;
   }
 
   List<IngredientTile> popuplateIngredients() {
     List<IngredientTile> list = [];
-    int count = recipe.ingredients.length;
+    int count = widget.recipe.ingredients.length;
     for (int i = 0; i < count; i++) {
       // list.add(IngredientTile(
       //     icons[i], ingredients[i], colors[i], amounts[i], units[i]));
       list.add(IngredientTile(
-        ingredient: Ingredient.fromJson(recipe.ingredients[i]),
-        amount: recipe.amounts[i],
-        unit: recipe.units[i],
+        ingredient: Ingredient.fromJson(widget.recipe.ingredients[i]),
+        amount: widget.recipe.amounts[i],
+        unit: widget.recipe.units[i],
       ));
     }
     return list;
   }
-
-  // Mock Data
-  // final List<IconData> icons = [
-  //   CustomIcons.peach,
-  //   CustomIcons.ice_cream,
-  //   CustomIcons.milk,
-  //   CustomIcons.banana,
-  //   CustomIcons.strawberry,
-  // ];
-  // final List<String> ingredients = [
-  //   "Peach",
-  //   "Ice Cream",
-  //   "Milk",
-  //   "Banana",
-  //   "Strawberry",
-  // ];
-  // final List<Color> colors = [
-  //   Colors.red[200],
-  //   Colors.orange[100],
-  //   Colors.white,
-  //   Color(0xffffe066),
-  //   Color(0xfff25f5c),
-  // ];
-  // final List<String> amounts = [
-  //   "1",
-  //   "3/4",
-  //   "2",
-  //   "1/2",
-  //   "1",
-  // ];
-  // final List<String> units = [
-  //   "cup",
-  //   "cup",
-  //   "cups",
-  //   "cup",
-  //   "cup",
-  // ];
 }
