@@ -8,6 +8,8 @@ const ingredientSchema = new mongoose.Schema({
   name: String,
   color: Number,
   icon: Number,
+  type: String,
+  density: Number,
 });
 
 // create a User model from the User schema

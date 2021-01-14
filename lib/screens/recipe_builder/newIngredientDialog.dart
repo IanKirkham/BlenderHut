@@ -7,6 +7,13 @@ import 'package:flutter_picker/flutter_picker.dart';
 import '../../apiService.dart';
 
 class NewIngredientDialog extends StatefulWidget {
+  final List<dynamic> optAmountList;
+  final List<int> optPickerList;
+  final Ingredient optIngredient;
+
+  NewIngredientDialog(
+      {this.optAmountList, this.optPickerList, this.optIngredient});
+
   @override
   _NewIngredientDialogState createState() => _NewIngredientDialogState();
 }
@@ -15,6 +22,20 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
   List<dynamic> _amountList;
   List<int> _pickerIndex;
   Ingredient currentIngredient;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.optAmountList != null
+        ? _amountList = widget.optAmountList
+        : _amountList = null;
+    widget.optPickerList != null
+        ? _pickerIndex = widget.optPickerList
+        : _pickerIndex = null;
+    widget.optIngredient != null
+        ? currentIngredient = widget.optIngredient
+        : currentIngredient = null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +205,8 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                             context,
                             IngredientTile(
                               ingredient: currentIngredient,
-                              amount: formatAmountText(),
-                              unit: "",
+                              amount: int.parse(_amountList[0]),
+                              unit: _amountList[1],
                             ),
                           ),
                   disabledColor: Colors.grey,
@@ -211,22 +232,24 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
   String formatAmountText() {
     String finalString = "";
 
-    if (_amountList[0] == "0" && _amountList[1] != "0") {
-      finalString = _amountList[1] + " " + _amountList[2];
-    } else if (_amountList[0] != "0" && _amountList[1] == "0") {
-      if (_amountList[0] == "1") {
-        finalString = _amountList[0] + " " + _amountList[2];
-      } else {
-        finalString = _amountList[0] + " " + _amountList[2] + "s";
-      }
-    } else {
-      finalString = _amountList[0] +
-          " and " +
-          _amountList[1] +
-          " " +
-          _amountList[2] +
-          "s";
-    }
+    // if (_amountList[0] == "0" && _amountList[1] != "0") {
+    //   finalString = _amountList[1] + " " + _amountList[2];
+    // } else if (_amountList[0] != "0" && _amountList[1] == "0") {
+    //   if (_amountList[0] == "1") {
+    //     finalString = _amountList[0] + " " + _amountList[2];
+    //   } else {
+    //     finalString = _amountList[0] + " " + _amountList[2] + "s";
+    //   }
+    // } else {
+    //   finalString = _amountList[0] +
+    //       " and " +
+    //       _amountList[1] +
+    //       " " +
+    //       _amountList[2] +
+    //       "s";
+    // }
+    finalString = _amountList[0] + " " + _amountList[1];
+
     return finalString;
   }
 
@@ -236,14 +259,15 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
       selecteds: selectedList,
       adapter: PickerDataAdapter<String>(
         pickerdata: [
-          List<int>.generate(101, (i) => i),
-          ["0", "1/4", "1/2", "3/4"],
+          //List<int>.generate(501, (i) => i),
+          //["0", "1/4", "1/2", "3/4"],
+          List<int>.generate(1001, (i) => i),
           [
-            "Cup",
-            "Tablespoon",
-            "Ounce",
-            "Gram",
-            "Mililiter",
+            "grams",
+            // "Cup",
+            // "Tablespoon",
+            // "Ounce",
+            // "Mililiter",
           ]
         ],
         isArray: true,
@@ -251,10 +275,10 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
       headerDecoration: BoxDecoration(
         color: Colors.lightBlueAccent,
       ),
-      textScaleFactor: 1.7,
+      textScaleFactor: 1.8,
       textStyle: TextStyle(color: Colors.white),
-      confirmTextStyle: TextStyle(color: Colors.greenAccent),
-      cancelTextStyle: TextStyle(color: Colors.redAccent),
+      confirmTextStyle: TextStyle(color: Colors.greenAccent, fontSize: 18),
+      cancelTextStyle: TextStyle(color: Colors.redAccent, fontSize: 18),
       title: new Text(
         "Ingredients",
         style: TextStyle(color: Colors.white),
@@ -270,7 +294,7 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
 
         var currList = picker.getSelectedValues();
 
-        if (currList[0] == "0" && currList[1] == "0") {
+        if (currList[0] == "0") {
           if (_amountList != null) {
             setState(() {
               _amountList = null;

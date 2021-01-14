@@ -1,3 +1,4 @@
+import 'package:blenderapp/apiService.dart';
 import 'package:blenderapp/models/ingredient.dart';
 import 'package:blenderapp/models/recipe.dart';
 import 'package:blenderapp/screens/recipe_builder/newIngredientDialog.dart';
@@ -182,9 +183,14 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                                   onPressed: () =>
                                       Navigator.of(context).pop(false)),
                               RaisedButton(
-                                  child: Text('Yes'),
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(true)),
+                                child: Text('Yes'),
+                                onPressed: () {
+                                  if (widget.recipe != null) {
+                                    deleteRecipe(widget.recipe.id);
+                                  }
+                                  Navigator.of(context).pop(true);
+                                },
+                              ),
                             ],
                           ),
                         ).then((shouldPop) =>
@@ -217,13 +223,41 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                                 "Recipe must contain at least one ingredient"),
                           ));
                         } else {
-                          print(ingredientTiles.length);
+                          // print(ingredientTiles.length);
                           if (widget.recipe == null) {
                             // create new recipe in the database
-
+                            List<String> idList = ingredientTiles
+                                .map((tile) => tile.ingredient.id)
+                                .toList();
+                            List<int> amountList = ingredientTiles
+                                .map((tile) => tile.amount)
+                                .toList();
+                            List<String> unitList = ingredientTiles
+                                .map((tile) => tile.unit)
+                                .toList();
+                            Recipe newRecipe = Recipe(
+                              title: titleTextController.text,
+                              ingredients: idList,
+                              amounts: amountList,
+                              units: unitList,
+                            );
+                            createRecipe(newRecipe);
                           } else {
                             // modify existing recipe in the database
-
+                            List<String> idList = ingredientTiles
+                                .map((tile) => tile.ingredient.id)
+                                .toList();
+                            List<int> amountList = ingredientTiles
+                                .map((tile) => tile.amount)
+                                .toList();
+                            List<String> unitList = ingredientTiles
+                                .map((tile) => tile.unit)
+                                .toList();
+                            widget.recipe.title = titleTextController.text;
+                            widget.recipe.ingredients = idList;
+                            widget.recipe.amounts = amountList;
+                            widget.recipe.units = unitList;
+                            updateRecipe(widget.recipe);
                           }
                           Navigator.pop(context);
                         }
@@ -263,15 +297,12 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
       },
     );
     return data;
-    //return success == null ? false : success;
   }
 
   List<IngredientTile> popuplateIngredients() {
     List<IngredientTile> list = [];
     int count = widget.recipe.ingredients.length;
     for (int i = 0; i < count; i++) {
-      // list.add(IngredientTile(
-      //     icons[i], ingredients[i], colors[i], amounts[i], units[i]));
       list.add(IngredientTile(
         ingredient: Ingredient.fromJson(widget.recipe.ingredients[i]),
         amount: widget.recipe.amounts[i],

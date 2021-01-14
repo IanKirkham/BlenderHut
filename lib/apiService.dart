@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/ingredient.dart';
 import 'models/recipe.dart';
@@ -48,32 +49,59 @@ Future<List<Recipe>> getRecipes(user) async {
 }
 
 // Create a recipe
-Future<http.Response> createRecipe(recipe) async {
+Future<http.Response> createRecipe(Recipe recipe) async {
   var url = BASE_API_URL + 'recipes/create';
-  return await http.post(url, body: {
-    'title': recipe.title,
-    'ingredients': recipe.ingredients,
-    'amounts': recipe.amounts,
-    'units': recipe.units,
-    'user': recipe.user,
-  });
+  final SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
+  String user = sharedPreferences.getString('user');
+  Map<String, String> headers = {
+    'Content-type': 'application/json',
+  };
+  return await http.post(
+    url,
+    headers: headers,
+    body: jsonEncode(
+      {
+        'title': recipe.title,
+        'ingredients': recipe.ingredients,
+        'amounts': recipe.amounts,
+        'units': recipe.units,
+        'user': user,
+      },
+    ),
+  );
 }
 
 // Edit a recipe
-Future<http.Response> editRecipe(recipe) async {
+Future<http.Response> updateRecipe(recipe) async {
   var url = BASE_API_URL + 'recipes/edit/' + recipe.id;
-  return await http.put(url, body: {
-    'title': recipe.title,
-    'ingredients': recipe.ingredients,
-    'amounts': recipe.amounts,
-    'units': recipe.units,
-    'user': recipe.user,
-  });
+  Map<String, String> headers = {
+    'Content-type': 'application/json',
+  };
+  return await http.put(
+    url,
+    headers: headers,
+    body: jsonEncode(
+      {
+        'title': recipe.title,
+        'ingredients': recipe.ingredients,
+        'amounts': recipe.amounts,
+        'units': recipe.units,
+        'user': recipe.user,
+      },
+    ),
+  );
+}
+
+// Favorite a recipe
+Future<http.Response> favoriteRecipe(id) async {
+  var url = BASE_API_URL + 'recipes/favorite/' + id;
+  return await http.put(url);
 }
 
 // Delete a recipe
-Future<http.Response> deleteRecipe(recipe) async {
-  var url = BASE_API_URL + 'recipes/delete/' + recipe.id;
+Future<http.Response> deleteRecipe(id) async {
+  var url = BASE_API_URL + 'recipes/delete/' + id;
   return await http.delete(url);
 }
 

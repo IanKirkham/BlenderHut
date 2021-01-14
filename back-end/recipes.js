@@ -14,7 +14,7 @@ const recipeSchema = new mongoose.Schema({
       ref: 'Ingredient'
     }
   ],
-  amounts: [String],
+  amounts: [Number],
   units: [String],
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -61,7 +61,7 @@ router.post('/create', async (req, res) => {
     ingredients: req.body.ingredients,
     amounts: req.body.amounts,
     units: req.body.units,
-    user: req.body.username,
+    user: req.body.user,
     favorite: false,
   });
   try {
@@ -89,6 +89,21 @@ router.put('/edit/:id', async (req, res) => {
     return res.send({
       recipe: recipe
     });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
+// favorite a recipe
+router.put('/favorite/:id', async (req, res) => {
+  try {
+    var recipe = await Recipe.findOne({
+      _id: req.params.id
+    });
+    recipe["favorite"] = !recipe["favorite"];
+    await recipe.save();
+    return res.sendStatus(200);
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);

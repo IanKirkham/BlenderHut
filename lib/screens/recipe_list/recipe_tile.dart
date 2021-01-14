@@ -1,3 +1,4 @@
+import 'package:blenderapp/apiService.dart';
 import 'package:blenderapp/models/ingredient.dart';
 import 'package:blenderapp/models/recipe.dart';
 import 'package:blenderapp/screens/recipe_builder/recipe_builder.dart';
@@ -54,11 +55,8 @@ class _RecipeTileState extends State<RecipeTile> {
                         ? Icon(Icons.favorite, color: Colors.pinkAccent)
                         : Icon(Icons.favorite_border, color: Colors.grey)),
                     onPressed: () => setState(() {
-                      // TODO add api call to edit the recipe 'favorite' field
-
-                      widget.recipe.favorite = //_isFavorited[widget.index] =
-                          !widget.recipe.favorite;
-                      //_isFavorited[widget.index];
+                      favoriteRecipe(widget.recipe.id);
+                      widget.recipe.favorite = !widget.recipe.favorite;
                     }),
                   ),
                   Align(

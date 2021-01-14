@@ -1,5 +1,4 @@
 import 'package:blenderapp/models/ingredient.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class IngredientTile extends StatelessWidget {
@@ -7,7 +6,7 @@ class IngredientTile extends StatelessWidget {
   // final String ingredient;
   // final Color color;
   final Ingredient ingredient;
-  final String amount;
+  final int amount;
   final String unit;
   //final Function removeIngredient;
 

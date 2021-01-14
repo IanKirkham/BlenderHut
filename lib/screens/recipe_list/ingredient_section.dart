@@ -45,6 +45,7 @@ class IngredientSection extends StatelessWidget {
               color: Colors.black,
               fontSize: 14,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

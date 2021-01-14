@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class Recipe {
   String title;
   List ingredients;
@@ -10,13 +8,13 @@ class Recipe {
   String id;
 
   Recipe({
-    @required this.title,
-    @required this.ingredients,
-    @required this.amounts,
-    @required this.units,
-    @required this.user,
-    @required this.favorite,
-    @required this.id,
+    this.title,
+    this.ingredients,
+    this.amounts,
+    this.units,
+    this.user,
+    this.favorite,
+    this.id,
   });
 
   // Convert from json

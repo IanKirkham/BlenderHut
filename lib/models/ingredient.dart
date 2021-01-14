@@ -3,14 +3,24 @@ class Ingredient {
   String name;
   int iconCode;
   int colorValue;
+  var density;
+  String type;
 
-  Ingredient({this.id, this.name, this.iconCode, this.colorValue});
+  Ingredient(
+      {this.id,
+      this.name,
+      this.iconCode,
+      this.colorValue,
+      this.density,
+      this.type});
 
   Ingredient.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     name = json['name'];
     iconCode = json['icon_code'];
     colorValue = json['color_value'];
+    density = json['density'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +29,8 @@ class Ingredient {
     data['name'] = this.name;
     data['icon_code'] = this.iconCode;
     data['color_value'] = this.colorValue;
+    data['density'] = this.density;
+    data['type'] = this.type;
     return data;
   }
 
