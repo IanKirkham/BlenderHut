@@ -57,13 +57,26 @@ class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
                             "Selected index: ${model.selectedDatum[0].index}");
                         print(
                             "Value of selection: ${model.selectedSeries[0].measureFn(model.selectedDatum[0].index)}");
-                        int res = await widget.onBarSelected(
-                            context, data[model.selectedDatum[0].index]);
-                        print("Modal sheet closed with value: $res");
-                        if (res != null) {
-                          setState(() {
-                            data[model.selectedDatum[0].index].amount = res;
-                          });
+
+                        // TODO: rather than checking if amount is 0, check if the cansiter at that position has a null ingredient object)
+                        if (model.selectedSeries[0]
+                                .measureFn(model.selectedDatum[0].index) ==
+                            0) {
+                          final snackbar = SnackBar(
+                            content:
+                                Text("Please add ingredient to canister first"),
+                            backgroundColor: Colors.red,
+                          );
+                          Scaffold.of(context).showSnackBar(snackbar);
+                        } else {
+                          int res = await widget.onBarSelected(
+                              context, data[model.selectedDatum[0].index]);
+                          print("Modal sheet closed with value: $res");
+                          if (res != null) {
+                            setState(() {
+                              data[model.selectedDatum[0].index].amount = res;
+                            });
+                          }
                         }
                       }
                     }

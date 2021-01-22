@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'screens/splash/splash.dart';
 
 void main() {
-  runApp(Main());
+  runApp(ProviderScope(child: Main()));
 }
 
 class Main extends StatefulWidget {

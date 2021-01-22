@@ -10,7 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class RecipeTile extends StatefulWidget {
   final Recipe recipe;
-  RecipeTile(this.recipe);
+  final Function refreshList;
+  RecipeTile(this.recipe, this.refreshList);
 
   @override
   _RecipeTileState createState() => _RecipeTileState();
@@ -80,7 +81,9 @@ class _RecipeTileState extends State<RecipeTile> {
                             recipe: widget.recipe,
                           ), //index}"),
                         ),
-                      );
+                      ).then((value) {
+                        widget.refreshList();
+                      });
                     },
                   ),
                 ],
@@ -99,51 +102,6 @@ class _RecipeTileState extends State<RecipeTile> {
               child: Row(
                 children: getIngredientSections(),
               ),
-              // child: FutureBuilder(
-              //     future: getIngredientSections(),
-              //     builder: (context, snapshot) {
-              //       return CircularProgressIndicator();
-              //     }),
-              // child: Row(
-              //   children: getIngredientSections(),
-              // ),
-              // children: [
-              //   IngredientSection(
-              //     icon: CustomIcons.peach,
-              //     amount: "1 cup",
-              //     color: Colors.red[200],
-              //     width: MAX_TILE_WIDTH,
-              //     ratio: 5,
-              //   ),
-              //   IngredientSection(
-              //     icon: CustomIcons.ice_cream,
-              //     amount: "3/4 cup",
-              //     color: Colors.orange[100],
-              //     width: MAX_TILE_WIDTH,
-              //     ratio: 5,
-              //   ),
-              //   IngredientSection(
-              //     icon: CustomIcons.milk,
-              //     amount: "2 cups",
-              //     color: Colors.white,
-              //     width: MAX_TILE_WIDTH,
-              //     ratio: 5,
-              //   ),
-              //   IngredientSection(
-              //     icon: CustomIcons.banana,
-              //     amount: "1/2 cup",
-              //     color: Color(0xffffe066),
-              //     width: MAX_TILE_WIDTH,
-              //     ratio: 5,
-              //   ),
-              //   IngredientSection(
-              //     icon: CustomIcons.strawberry,
-              //     amount: "1 cup",
-              //     color: Color(0xfff25f5c),
-              //     width: MAX_TILE_WIDTH,
-              //     ratio: 5,
-              //   ),
-              // ],
             ),
             //),
           ],

@@ -12,6 +12,20 @@ class RecipeList extends StatefulWidget {
 }
 
 class _RecipeListState extends State<RecipeList> {
+  Future<List<Recipe>> _recipeList;
+
+  void refreshList() {
+    setState(() {
+      _recipeList = getRecipesHelper();
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    _recipeList = getRecipesHelper();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,7 +53,9 @@ class _RecipeListState extends State<RecipeList> {
                     CupertinoPageRoute(
                       builder: (context) => RecipeBuilder(),
                     ),
-                  );
+                  ).then((value) {
+                    refreshList();
+                  });
                 },
               ),
             ],
@@ -77,7 +93,7 @@ class _RecipeListState extends State<RecipeList> {
             ),
           ),
           FutureBuilder<List<Recipe>>(
-            future: getRecipesHelper(),
+            future: _recipeList,
             builder: (context, snapshot) {
               var childCount = 0;
               if (snapshot.connectionState != ConnectionState.done ||
@@ -97,7 +113,7 @@ class _RecipeListState extends State<RecipeList> {
                       return Container();
                     }
                     return Container(
-                      child: RecipeTile(snapshot.data[index]),
+                      child: RecipeTile(snapshot.data[index], refreshList),
                     );
                   },
                   childCount: childCount,

@@ -186,9 +186,11 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                                 child: Text('Yes'),
                                 onPressed: () {
                                   if (widget.recipe != null) {
-                                    deleteRecipe(widget.recipe.id);
+                                    deleteRecipe(widget.recipe.id).then(
+                                        (value) =>
+                                            Navigator.of(context).pop(true));
                                   }
-                                  Navigator.of(context).pop(true);
+                                  //Navigator.of(context).pop(true);
                                 },
                               ),
                             ],
@@ -241,7 +243,8 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                               amounts: amountList,
                               units: unitList,
                             );
-                            createRecipe(newRecipe);
+                            createRecipe(newRecipe)
+                                .then((value) => Navigator.pop(context));
                           } else {
                             // modify existing recipe in the database
                             List<String> idList = ingredientTiles
@@ -257,9 +260,10 @@ class _RecipeBuilderState extends State<RecipeBuilder> {
                             widget.recipe.ingredients = idList;
                             widget.recipe.amounts = amountList;
                             widget.recipe.units = unitList;
-                            updateRecipe(widget.recipe);
+                            updateRecipe(widget.recipe)
+                                .then((value) => Navigator.pop(context));
                           }
-                          Navigator.pop(context);
+                          //Navigator.pop(context);
                         }
                       },
                       height: MediaQuery.of(context).size.height / 17,
