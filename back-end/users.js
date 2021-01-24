@@ -7,6 +7,12 @@ const router = express.Router();
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
+  containers: [{
+      label: String,
+      ingredient: {type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient'},
+      percent_full: {type: Number, default: 0},      
+    }
+  ]
 });
 
 // This is a hook that will be called before a user record is saved,
@@ -18,8 +24,10 @@ userSchema.pre('save', async function(next) {
 
   try {
     // generate a hash. argon2 does the salting and hashing for us
+    // @ts-ignore
     const hash = await argon2.hash(this.password);
     // override the plaintext password with the hashed one
+    // @ts-ignore
     this.password = hash;
     next();
   } catch (error) {
@@ -63,7 +71,7 @@ router.get('/:id', async (req, res) => {
   try {
     const user = await User.findOne({
       _id: req.params.id
-    });
+    }).populate('containers.ingredient');
 
     if (!user) {
       return res.status(404).send({
@@ -80,9 +88,6 @@ router.get('/:id', async (req, res) => {
 
 // Register a new user
 router.post('/register', async (req, res) => {
-  // Make sure that the form coming from the browser includes a username and a
-  // passsword, otherwise return an error. A 400 error means the request was
-  // malformed.
 
   if (!req.body.username || !req.body.password)
     return res.status(400).send({
@@ -101,10 +106,29 @@ router.post('/register', async (req, res) => {
         message: "Username already exists"
       });
 
+    // generate initial container data
+    // first generate frozen containers
+    var containers = [];
+    for (var i = 1; i < 7; i++) {
+      var Container = {label:"F"+i, ingredient:null, percent_full:0};
+      containers.push(Container);
+    }
+
+    // now generate liquid containers
+    for (var i = 1; i < 4; i++) {
+      var Container = {label:"L"+i, ingredient:null, percent_full:0};
+      containers.push(Container);
+    }
+
+    //TODO: DELETE THIS
+      containers[0].ingredient = "5ff6703c0e68452ed40566a7";
+      containers[0].percent_full = 50;
+
     // create a new user and save it to the database
     const user = new User({
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
+      containers: containers,
     });
     await user.save();
     // send back a 200 OK response, along with the user that was created
@@ -117,8 +141,7 @@ router.post('/register', async (req, res) => {
 
 // login a user
 router.post('/login', async (req, res) => {
-  // Make sure that the form coming from the browser includes a username and a
-  // password, otherwise return an error.
+
   if (!req.body.username || !req.body.password)
     return res.sendStatus(400);
 
@@ -135,6 +158,7 @@ router.post('/login', async (req, res) => {
 
     // Return the SAME error if the password is wrong. This ensure we don't
     // leak any information about which users exist.
+    // @ts-ignore
     if (!await user.comparePassword(req.body.password))
       return res.status(403).send({
         message: "Username or password is wrong"
@@ -142,6 +166,38 @@ router.post('/login', async (req, res) => {
 
     // return user
     return res.send(user);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
+// Edit container data
+router.put('/containers/:id', async (req, res) => {
+  try {
+    //  lookup user record
+    const user = await User.findOne({
+      username: req.params.id
+    });
+    // Return an error if user does not exist.
+    if (!user)
+      return res.status(403).send({
+        message: "Could not find user"
+    });
+
+    // Return error if no container array is recieved
+    if (!req.body.containers) {
+      return res.status(403).send({
+        message: "No container data provided"
+      });
+    }
+    
+    user["containers"] = req.body.containers;
+    await user.save();
+    return res.send({
+      user: user,
+    });
+
   } catch (error) {
     console.log(error);
     return res.sendStatus(500);

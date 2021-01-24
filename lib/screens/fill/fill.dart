@@ -1,3 +1,4 @@
+import 'package:blenderapp/models/containerData.dart';
 import 'package:blenderapp/widgets/horizontalBarLabelChart.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -17,10 +18,10 @@ class Fill extends StatelessWidget {
   }
 }
 
-Future<int> _sliderPopup(context, ingredientData) async {
-  int currentAmount = ingredientData.amount;
+Future<ContainerData> _sliderPopup(context, ContainerData container) async {
+  int currentAmount = container.percentFull;
 
-  int res = await showModalBottomSheet<int>(
+  ContainerData res = await showModalBottomSheet<ContainerData>(
     //barrierColor: Colors.transparent,
     backgroundColor: Color(0xFF2F3D46), //Colors.blueGrey[500],
     shape: RoundedRectangleBorder(
@@ -32,16 +33,28 @@ Future<int> _sliderPopup(context, ingredientData) async {
     context: context,
     builder: (BuildContext bc) {
       return Container(
-        height: MediaQuery.of(context).size.height * 0.4,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              "Select amount for \n[ ${ingredientData.ingredient} ]",
+              "Select amount for \n[ ${container.ingredient.name} ]",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 25,
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              width: MediaQuery.of(context).size.height * 0.2,
+              color: Colors.purple,
+              child: Center(
+                child: Icon(
+                  IconData(container.ingredient.iconCode,
+                      fontFamily: 'CustomIcons'),
+                  color: Colors.white,
+                  size: 50,
+                ),
               ),
             ),
             StatefulBuilder(
@@ -77,8 +90,9 @@ Future<int> _sliderPopup(context, ingredientData) async {
                         (actualValue, formattedText) =>
                             actualValue.toInt().toString() + "%",
                     stepSize: 5.0,
-                    activeColor: ingredientData.color,
-                    inactiveColor: ingredientData.color.withOpacity(0.2),
+                    activeColor: Color(container.ingredient.colorValue),
+                    inactiveColor:
+                        Color(container.ingredient.colorValue).withOpacity(0.2),
                     value: currentAmount.toDouble(),
                     // numberFormat: NumberFormat.percentPattern(),
                     onChanged: (newAmount) {
@@ -90,8 +104,9 @@ Future<int> _sliderPopup(context, ingredientData) async {
             ),
             MaterialButton(
               onPressed: () {
-                // save to the database somehow?
-                //print("amount was ${ingredientData.amount}");
+                // save to database,
+                // return ContainerData object
+
                 Navigator.pop(context, currentAmount);
               },
               minWidth: MediaQuery.of(context).size.width / 3,

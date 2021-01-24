@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/ingredient.dart';
 import 'models/recipe.dart';
+import 'models/user.dart';
 
 //const TIMEOUT = 5;
 const EMULATOR_IP = "10.0.2.2";
@@ -13,9 +14,16 @@ const PC_IP = "192.168.1.3";
 const BASE_API_URL = 'http://' + EMULATOR_IP + ':3000/api/';
 
 // Get a user
-Future<http.Response> getUser(user) async {
-  var url = BASE_API_URL + 'users/' + user.id;
-  return await http.get(url);
+Future<User> getUser(user) async {
+  var url = BASE_API_URL + 'users/' + user;
+  var response = await http.get(url);
+  User recievedUser;
+  if (response.statusCode == 200) {
+    var json = jsonDecode(response.body);
+    print(json);
+    recievedUser = User.fromJson(json);
+  }
+  return recievedUser;
 }
 
 // Log in user
@@ -125,3 +133,6 @@ Future<Ingredient> getIngredient(id) async {
   var json = jsonDecode(response.body);
   return Ingredient.fromJson(json);
 }
+
+// Edit container data
+Future<http.Response> editContainer() async {}

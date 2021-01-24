@@ -1,12 +1,8 @@
 import 'package:blenderapp/screens/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/all.dart';
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
-
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class Profile extends StatefulWidget {
   @override
@@ -35,17 +31,11 @@ class _ProfileState extends State<Profile> {
           height: 30,
           child: Text("Logout"),
         ),
-        MaterialButton(
-          onPressed: () => setState(() {}),
-          color: Colors.purple,
-        ),
-        //StackWithOverflowClipped(),
-        //CustomBlenderWidget(),
         Stack(
           children: [
             Container(
-              height: 400,
-              width: 400,
+              height: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.8,
               padding: EdgeInsets.all(10),
               child: Image.asset('assets/images/blender_graphic.png'),
               decoration: BoxDecoration(
@@ -53,53 +43,42 @@ class _ProfileState extends State<Profile> {
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
             ),
+            CustomBlenderWidget(),
             Container(
-              // width: 400,
-              // height: 400,
-              child: CustomBlenderWidget(),
-              // child: LiquidCustomProgressIndicator(
-              //   direction: Axis.vertical,
-              //   value: 0.4,
-              //   valueColor: AlwaysStoppedAnimation(
-              //     Colors.pink,
-              //   ),
-              //   backgroundColor: Colors.white,
-              //   center: Text("80%", style: TextStyle(color: Colors.black)),
-              //   shapePath: getPath(
-              //     Size(400, 400),
-              //   ),
-              // ),
+              width: MediaQuery.of(context).size.width * 0.75,
+              height: MediaQuery.of(context).size.width * 0.8,
+              child: Center(
+                child: Container(
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.all(Radius.circular(5)),
+                  //   color: Colors.purple,
+                  // ),
+                  padding: EdgeInsets.all(5),
+                  child: Text(
+                    "75%",
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            Container(
-              width: 385,
-              height: 400,
-              child: Center(child: Text("~50%")),
-            )
           ],
         ),
       ],
     );
   }
-
-  // Path getPath(Size size) {
-  //   final path = new Path();
-  //   path.moveTo(size.width * 0.38, size.height * 0.65);
-  //   path.lineTo(size.width * 0.30, size.height * 0.50);
-  //   path.lineTo(size.width * 0.30, size.height * 0.12);
-  //   path.lineTo(size.width * 0.64, size.height * 0.12);
-  //   path.lineTo(size.width * 0.64, size.height * 0.50);
-  //   path.lineTo(size.width * 0.56, size.height * 0.65);
-  //   path.lineTo(size.width * 0.38, size.height * 0.65);
-  //   path.close();
-  //   return path;
-  // }
 }
 
 class CustomBlenderWidget extends StatelessWidget {
-  final shapePath = getPath(Size(400, 400));
-
   @override
   Widget build(BuildContext context) {
+    final shapePath = getPath(
+      Size(
+        MediaQuery.of(context).size.width * 0.8,
+        MediaQuery.of(context).size.width * 0.8,
+      ),
+    );
     final pathBounds = shapePath.getBounds();
     return SizedBox(
       width: pathBounds.width + pathBounds.left,
@@ -119,12 +98,11 @@ class CustomBlenderWidget extends StatelessWidget {
                 left: pathBounds.left,
                 top: pathBounds.top,
                 child: Wave(
-                  value: 0.5,
-                  color: Colors.purple, //Colors.transparent, //Colors.purple,
+                  value: 0.75,
+                  color: Colors.purpleAccent[100],
                   direction: Axis.vertical,
                 ),
               ),
-              //Center(child: Text("50%", style: TextStyle(color: Colors.black))),
             ],
           ),
         ),
@@ -135,16 +113,6 @@ class CustomBlenderWidget extends StatelessWidget {
   static Path getPath(Size size) {
     final path = new Path();
     path.moveTo(size.width * 0.38, size.height * 0.65);
-    // path.quadraticBezierTo(size.width * 0.38, size.height * 0.50,
-    //     size.width * 0.30, size.height * 0.50);
-    // path.quadraticBezierTo(size.height * 0.50, size.width * 0.30,
-    //     size.height * 0.65, size.width * 0.38);
-
-    // path.quadraticBezierTo(size.width * 0.27, size.height * 0.55,
-    //     size.width * 0.3, size.height * 0.12);
-    // path.lineTo(size.width * 0.3, size.height * 0.58);
-    // // path.lineTo(size.width * 0.30, size.height * 0.12);
-
     path.cubicTo(
       size.width * 0.26,
       size.height * 0.50,
@@ -153,23 +121,7 @@ class CustomBlenderWidget extends StatelessWidget {
       size.width * 0.29,
       size.height * 0.12,
     );
-
-    //path.lineTo(size.width * 0.30, size.height * 0.50);
-    //path.lineTo(size.width * 0.30, size.height * 0.12);
     path.lineTo(size.width * 0.64, size.height * 0.12);
-
-    //path.moveTo(size.width * 0.56, size.height * 0.65);
-    // path.cubicTo(size.width * 0.73, size.height * 0.35, size.width * 0.55,
-    //     size.height * 0.50, size.width * 0.56, size.height * 0.65);
-    // path.cubicTo(
-    //   size.width * 0.68,
-    //   size.height * 0.50,
-    //   size.width * 0.64,
-    //   size.height * 0.35,
-    //   size.width * 0.64,
-    //   size.height * 0.12,
-    // );
-
     path.cubicTo(
       size.width * 0.64,
       size.height * 0.35,
@@ -178,10 +130,6 @@ class CustomBlenderWidget extends StatelessWidget {
       size.width * 0.56,
       size.height * 0.65,
     );
-    //path.moveTo(size.width * 0.56, size.height * 0.65);
-
-    //path.lineTo(size.width * 0.64, size.height * 0.50);
-    //path.lineTo(size.width * 0.56, size.height * 0.65);
     path.lineTo(size.width * 0.38, size.height * 0.65);
     path.close();
     return path;
@@ -219,157 +167,6 @@ class _CustomPathClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-// class StackWithOverflowClipped extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     // return Container(
-//     //   height: 200,
-//     //   width: 200,
-//     //   color: Colors.grey[200],
-//     //   child: Stack(
-//     //     overflow: Overflow.clip,
-//     //     children: [
-//     //       Container(
-//     //         height: 50,
-//     //         width: 300,
-//     //         color: Colors.blue,
-//     //       )
-//     //     ],
-//     //   ),
-//     // );
-//     return Stack(
-//       children: [
-//         Container(
-//           height: 400,
-//           width: 400,
-//           padding: EdgeInsets.all(10),
-//           child: Image.asset('assets/images/blender_graphic.png'),
-//           decoration: BoxDecoration(
-//             color: Colors.blue,
-//             borderRadius: BorderRadius.all(Radius.circular(10)),
-//           ),
-//         ),
-//         ClipPath(
-//           child: CustomPaint(
-//             painter: _CustomPathPainter(
-//               color: Colors.pink,
-//               path: getPath(Size(400, 400)),
-//             ),
-//             child: Stack(
-//               children: <Widget>[
-//                 Positioned.fill(
-//                   // left: pathBounds.left,
-//                   // top: pathBounds.top,
-//                   child: Container(
-//                     height: 300,
-//                     color: Colors.yellow,
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           clipper: MyCustomClipper(path: getPath(Size(400, 400))),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Path getPath(Size size) {
-//     final path = new Path();
-//     path.moveTo(size.width * 0.38, size.height * 0.65);
-//     path.lineTo(size.width * 0.30, size.height * 0.50);
-//     path.lineTo(size.width * 0.30, size.height * 0.12);
-//     path.lineTo(size.width * 0.64, size.height * 0.12);
-//     path.lineTo(size.width * 0.64, size.height * 0.50);
-//     path.lineTo(size.width * 0.56, size.height * 0.65);
-//     path.lineTo(size.width * 0.38, size.height * 0.65);
-//     path.close();
-//     return path;
-//   }
-// }
-
-// class _CustomPathPainter extends CustomPainter {
-//   final Color color;
-//   final Path path;
-
-//   _CustomPathPainter({@required this.color, @required this.path});
-
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     final paint = Paint()..color = color;
-//     canvas.drawPath(path, paint);
-//   }
-
-//   @override
-//   bool shouldRepaint(_CustomPathPainter oldDelegate) => false;
-// }
-
-// // class _CustomPathClipper extends CustomClipper<Path> {
-// //   final Path path;
-
-// //   _CustomPathClipper({@required this.path});
-
-// //   @override
-// //   Path getClip(Size size) {
-// //     return path;
-// //   }
-
-// //   @override
-// //   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-// // }
-
-// class MyCustomClipper extends CustomClipper<Path> {
-//   final Path path;
-//   MyCustomClipper({@required this.path});
-
-//   @override
-//   getClip(Size size) {
-//     // final path = new Path();
-//     // path.moveTo(size.width * 0.38, size.height * 0.65);
-//     // path.lineTo(size.width * 0.30, size.height * 0.50);
-//     // path.lineTo(size.width * 0.30, size.height * 0.12); //calculatedHeight
-//     // path.lineTo(size.width * 0.64, size.height * 0.12); //calculatedHeight
-//     // path.lineTo(size.width * 0.64, size.height * 0.50);
-//     // path.lineTo(size.width * 0.56, size.height * 0.65);
-//     // path.lineTo(size.width * 0.38, size.height * 0.65);
-//     // path.close();
-//     // return path;
-//     return path;
-//   }
-
-//   @override
-//   bool shouldReclip(oldClipper) => false;
-// }
-
-// // return SizedBox(
-// //   width: pathBounds.width + pathBounds.left,
-// //   height: pathBounds.height + pathBounds.top,
-// //   child: ClipPath(
-// //     clipper: _CustomPathClipper(
-// //       path: widget.shapePath,
-// //     ),
-// //     child: CustomPaint(
-// //       painter: _CustomPathPainter(
-// //         color: widget._getBackgroundColor(context),
-// //         path: widget.shapePath,
-// //       ),
-// //       child: Stack(
-// //         children: <Widget>[
-// //           Positioned.fill(
-// //             left: pathBounds.left,
-// //             top: pathBounds.top,
-// //             child: Wave(
-// //               value: widget.value,
-// //               color: widget._getValueColor(context),
-// //               direction: widget.direction,
-// //             ),
-// //           ),
-// //           if (widget.center != null) Center(child: widget.center),
-// //         ],
-// //       ),
-// //     ),
-// //   ),
-// // );
 class Wave extends StatefulWidget {
   final double value;
   final Color color;
