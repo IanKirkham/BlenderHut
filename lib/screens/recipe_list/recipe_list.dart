@@ -30,6 +30,7 @@ class _RecipeListState extends State<RecipeList> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: CustomScrollView(
+        physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
             snap: true,

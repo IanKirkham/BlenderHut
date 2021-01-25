@@ -23,6 +23,8 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
   List<int> _pickerIndex;
   Ingredient currentIngredient;
 
+  List<Ingredient> ingredientList;
+
   @override
   void initState() {
     super.initState();
@@ -57,8 +59,9 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
             Container(
               margin: EdgeInsets.all(12),
               child: DropdownSearch<Ingredient>(
-                mode: Mode.BOTTOM_SHEET,
+                mode: Mode.DIALOG,
                 showSelectedItem: true,
+                autoFocusSearchBox: true,
                 onFind: (filter) => getIngredientList(),
                 onChanged: (newIngredient) {
                   setState(() {
@@ -78,10 +81,7 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                           Text("Ingredients", style: TextStyle(fontSize: 28))),
                 ),
                 popupShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 popupItemBuilder: (context, item, isSelected) {
                   return Container(
@@ -210,9 +210,6 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                             ),
                           ),
                   disabledColor: Colors.grey,
-                  // onPressed: () {
-                  //   Navigator.pop(context, true);
-                  // },
                   color: Color(0xFF48C28C), //Colors.green,
                   child: Text(
                     "Add",

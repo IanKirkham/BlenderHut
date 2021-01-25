@@ -16,25 +16,19 @@ class HorizontalBarLabelChart extends StatefulWidget {
 }
 
 class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
-  // final List<ContainerData> data = [
-  //   ContainerData('F1 - Empty', 0, Colors.transparent),
-  //   ContainerData('F2 - Raspberry', 100, Colors.pink[400]),
-  //   ContainerData('F3 - Peach', 15, Colors.red[200]),
-  //   ContainerData('F4 - Ice Cream', 100, Colors.orange[100]),
-  //   ContainerData('F5 - Banana', 75, Color(0xffffe066)),
-  //   ContainerData('F6 - Strawberry', 90, Color(0xfff25f5c)),
-  //   ContainerData('L1 - Milk', 30, Colors.white),
-  //   ContainerData('L2 - OJ', 25, Colors.orange[300]),
-  //   ContainerData('L3 - Water', 90, Colors.blue[100]),
-  // ];
+  Future<List<ContainerData>> _containerData;
 
-  // List<ContainerData> test;
+  void refreshData() {
+    setState(() {
+      _containerData = _getContainerData();
+    });
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   test = _getContainerData();
-  // }
+  @override
+  initState() {
+    super.initState();
+    _containerData = _getContainerData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +48,7 @@ class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
           Text(widget.title),
           Expanded(
             child: FutureBuilder(
-              future: _getContainerData(),
+              future: _containerData,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData == null) {
@@ -93,16 +87,22 @@ class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
                                     context,
                                     snapshot
                                         .data[model.selectedDatum[0].index]);
-                                if (res != null) {
-                                  print(
-                                      "Modal sheet closed with value: ${res.percentFull}");
-                                  setState(() {
-                                    snapshot.data[
-                                        model.selectedDatum[0].index] = res;
-                                  });
-                                } else {
-                                  setState(() {});
-                                }
+
+                                refreshData();
+
+                                // if (res != null) {
+                                //   print(
+                                //       "Modal sheet closed with value: ${res.percentFull}");
+                                //   print(
+                                //       "Modal sheet colsed with ingredient: ${res.ingredient.name}");
+                                //   // setState(() {
+                                //   //   //snapshot.data[
+                                //   //   //  model.selectedDatum[0].index] = res;
+                                //   //   refreshData();
+                                //   // });
+                                // } else {
+                                //   setState(() {});
+                                // }
                                 //}
                               }
                             }
@@ -134,6 +134,7 @@ class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
                         ),
                       ),
                       primaryMeasureAxis: charts.NumericAxisSpec(
+                        viewport: charts.NumericExtents(0, 100),
                         tickProviderSpec: charts.BasicNumericTickProviderSpec(
                           desiredTickCount: 5,
                         ),
@@ -167,7 +168,6 @@ class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
         await SharedPreferences.getInstance();
     String userId = sharedPreferences.getString('user');
     User user = await getUser(userId);
-    //print(user.containers);
     return user.containers.map((item) => ContainerData.fromJson(item)).toList();
   }
 

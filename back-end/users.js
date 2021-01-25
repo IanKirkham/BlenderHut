@@ -173,11 +173,11 @@ router.post('/login', async (req, res) => {
 });
 
 // Edit container data
-router.put('/containers/:id', async (req, res) => {
+router.put('/:user/containers/:id', async (req, res) => {
   try {
     //  lookup user record
     const user = await User.findOne({
-      username: req.params.id
+      _id: req.params.user
     });
     // Return an error if user does not exist.
     if (!user)
@@ -185,14 +185,20 @@ router.put('/containers/:id', async (req, res) => {
         message: "Could not find user"
     });
 
-    // Return error if no container array is recieved
-    if (!req.body.containers) {
-      return res.status(403).send({
-        message: "No container data provided"
-      });
-    }
+    // // Return error if no container array is recieved
+    // if (!req.body.ingredient) {
+    //   return res.status(403).send({
+    //     message: "No container data provided"
+    //   });
+    // }
     
-    user["containers"] = req.body.containers;
+    user["containers"].forEach((e) => {
+      if (e._id == req.body._id) {
+        e["ingredient"] = req.body.ingredient;
+        e["percent_full"] = req.body.percent_full;
+      }
+    });
+
     await user.save();
     return res.send({
       user: user,

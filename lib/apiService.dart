@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'models/containerData.dart';
 import 'models/ingredient.dart';
 import 'models/recipe.dart';
 import 'models/user.dart';
@@ -135,4 +136,27 @@ Future<Ingredient> getIngredient(id) async {
 }
 
 // Edit container data
-Future<http.Response> editContainer() async {}
+Future editContainer(String user, ContainerData container) async {
+  var url = BASE_API_URL + 'users/' + user + "/containers/" + container.id;
+  Map<String, String> headers = {
+    'Content-type': 'application/json',
+  };
+  http.Response response = await http.put(
+    url,
+    headers: headers,
+    body: jsonEncode(
+      {
+        'ingredient':
+            container.ingredient == null ? null : container.ingredient.id,
+        'percent_full': container.percentFull,
+        '_id': container.id,
+      },
+    ),
+  );
+
+  if (response.statusCode != 200) {
+    print(response.body);
+  }
+
+  return;
+}
