@@ -45,7 +45,7 @@ class _HorizontalBarLabelChartState extends State<HorizontalBarLabelChart> {
       ),
       child: Column(
         children: [
-          Text(widget.title),
+          Text(widget.title, style: TextStyle(fontSize: 18)),
           Expanded(
             child: FutureBuilder(
               future: _containerData,

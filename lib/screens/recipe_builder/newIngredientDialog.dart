@@ -62,7 +62,7 @@ class _NewIngredientDialogState extends State<NewIngredientDialog> {
                 mode: Mode.DIALOG,
                 showSelectedItem: true,
                 autoFocusSearchBox: true,
-                onFind: (filter) => getIngredientList(),
+                onFind: (filter) => getIngredientList(null),
                 onChanged: (newIngredient) {
                   setState(() {
                     currentIngredient = newIngredient;

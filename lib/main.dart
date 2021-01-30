@@ -1,7 +1,23 @@
+import 'package:blenderapp/screens/home/favoritesNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'screens/splash/splash.dart';
+
+// final favoriteListProvider = FutureProvider<List<String>>((ref) async {
+//   final SharedPreferences sharedPreferences =
+//       await SharedPreferences.getInstance();
+//   var user = sharedPreferences.getString('user');
+//   List<Recipe> allRecipes = await getRecipes(user);
+//   return allRecipes.map((item) => item.title).toList();
+//   //return FavoriteList(allRecipes.where((item) => item.favorite).toList());
+// });
+
+final favoritesNotifierProvider =
+    StateNotifierProvider<FavoritesNotifier>((ref) {
+  return FavoritesNotifier();
+});
 
 void main() {
   runApp(ProviderScope(child: Main()));

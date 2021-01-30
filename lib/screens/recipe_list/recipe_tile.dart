@@ -1,4 +1,5 @@
 import 'package:blenderapp/apiService.dart';
+import 'package:blenderapp/main.dart';
 import 'package:blenderapp/models/ingredient.dart';
 import 'package:blenderapp/models/recipe.dart';
 import 'package:blenderapp/screens/recipe_builder/recipe_builder.dart';
@@ -7,6 +8,8 @@ import 'package:blenderapp/screens/recipe_list/ingredient_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/all.dart';
+import 'package:http/http.dart' as http;
 
 class RecipeTile extends StatefulWidget {
   final Recipe recipe;
@@ -51,14 +54,27 @@ class _RecipeTileState extends State<RecipeTile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    icon: (widget.recipe.favorite //_isFavorited[widget.index]
-                        ? Icon(Icons.favorite, color: Colors.pinkAccent)
-                        : Icon(Icons.favorite_border, color: Colors.grey)),
-                    onPressed: () => setState(() {
-                      favoriteRecipe(widget.recipe.id);
-                      widget.recipe.favorite = !widget.recipe.favorite;
-                    }),
+                  Consumer(
+                    builder: (context, watch, child) {
+                      return IconButton(
+                        icon: (widget
+                                .recipe.favorite //_isFavorited[widget.index]
+                            ? Icon(Icons.favorite, color: Colors.pinkAccent)
+                            : Icon(Icons.favorite_border, color: Colors.grey)),
+                        onPressed: () async {
+                          http.Response res =
+                              await favoriteRecipe(widget.recipe.id);
+                          if (res.statusCode == 200) {
+                            setState(() {
+                              widget.recipe.favorite = !widget.recipe.favorite;
+                              context
+                                  .read(favoritesNotifierProvider)
+                                  .retrieveFavorites();
+                            });
+                          }
+                        },
+                      );
+                    },
                   ),
                   Align(
                     child: Text(widget.recipe.title,

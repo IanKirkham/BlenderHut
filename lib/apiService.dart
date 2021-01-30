@@ -115,7 +115,7 @@ Future<http.Response> deleteRecipe(id) async {
 }
 
 // Get a list of all ingredients
-Future<List<Ingredient>> getIngredientList() async {
+Future<List<Ingredient>> getIngredientList(filter) async {
   var url = BASE_API_URL + 'ingredients';
   http.Response response = await http.get(url);
   List<Ingredient> list = [];
@@ -124,7 +124,12 @@ Future<List<Ingredient>> getIngredientList() async {
     list =
         (parsedJson as List).map((item) => Ingredient.fromJson(item)).toList();
   }
-  return list;
+
+  if (filter == null) {
+    return list;
+  } else {
+    return list.where((i) => i.type == filter).toList();
+  }
 }
 
 // Get a specific ingredient

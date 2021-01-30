@@ -86,7 +86,8 @@ Future<ContainerData> _sliderPopup(context, ContainerData container) async {
                   mode: Mode.DIALOG,
                   showSelectedItem: true,
                   autoFocusSearchBox: true,
-                  onFind: (filter) => getIngredientList(),
+                  onFind: (filter) =>
+                      getIngredientList(container.containerType),
                   onChanged: (newIngredient) {
                     setState(() {
                       container.ingredient = newIngredient;

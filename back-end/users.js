@@ -9,8 +9,9 @@ const userSchema = new mongoose.Schema({
   password: String,
   containers: [{
       label: String,
+      container_type: String,
       ingredient: {type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient'},
-      percent_full: {type: Number, default: 0},      
+      percent_full: {type: Number, default: 0},   
     }
   ]
 });
@@ -110,19 +111,15 @@ router.post('/register', async (req, res) => {
     // first generate frozen containers
     var containers = [];
     for (var i = 1; i < 7; i++) {
-      var Container = {label:"F"+i, ingredient:null, percent_full:0};
+      var Container = {label:"F"+i, ingredient:null, percent_full:0, container_type:"FROZEN"};
       containers.push(Container);
     }
 
     // now generate liquid containers
     for (var i = 1; i < 4; i++) {
-      var Container = {label:"L"+i, ingredient:null, percent_full:0};
+      var Container = {label:"L"+i, ingredient:null, percent_full:0, container_type:"LIQUID"};
       containers.push(Container);
     }
-
-    //TODO: DELETE THIS
-      containers[0].ingredient = "5ff6703c0e68452ed40566a7";
-      containers[0].percent_full = 50;
 
     // create a new user and save it to the database
     const user = new User({

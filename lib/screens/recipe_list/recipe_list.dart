@@ -14,7 +14,7 @@ class RecipeList extends StatefulWidget {
 class _RecipeListState extends State<RecipeList> {
   Future<List<Recipe>> _recipeList;
 
-  void refreshList() {
+  Future<void> refreshList() async {
     setState(() {
       _recipeList = getRecipesHelper();
     });
@@ -29,100 +29,106 @@ class _RecipeListState extends State<RecipeList> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: CustomScrollView(
-        physics: BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            snap: true,
-            forceElevated: true,
-            floating: true,
-            title: Text(
-              "My Recipes",
-              style: TextStyle(fontSize: 35),
-            ),
-            centerTitle: true,
-            actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.add,
-                  size: 40,
-                  color: Colors.lightBlueAccent,
+      child: Scaffold(
+        body: RefreshIndicator(
+          onRefresh: () => refreshList(),
+          child: CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                snap: true,
+                forceElevated: true,
+                floating: true,
+                title: Text(
+                  "My Recipes",
+                  style: TextStyle(fontSize: 35),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => RecipeBuilder(),
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.add,
+                      size: 40,
+                      color: Colors.lightBlueAccent,
                     ),
-                  ).then((value) {
-                    refreshList();
-                  });
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => RecipeBuilder(),
+                        ),
+                      ).then((value) {
+                        refreshList();
+                      });
+                    },
+                  ),
+                ],
+                expandedHeight: 2 * kToolbarHeight,
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.only(top: kToolbarHeight),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 16),
+                          child: RaisedButton(
+                              color: Colors.lightBlueAccent,
+                              child: Text(
+                                "Button One",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {}),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 16),
+                          child: RaisedButton(
+                              color: Colors.lightBlueAccent,
+                              child: Text(
+                                "Button Two",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () {}),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              FutureBuilder<List<Recipe>>(
+                future: _recipeList,
+                builder: (context, snapshot) {
+                  var childCount = 0;
+                  if (snapshot.connectionState != ConnectionState.done ||
+                      snapshot.hasData == null) {
+                    childCount = 1;
+                  } else {
+                    childCount = snapshot.data.length;
+                  }
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return Container(
+                              child:
+                                  Center(child: CircularProgressIndicator()));
+                        }
+                        if (snapshot.hasData == null) {
+                          return Container();
+                        }
+                        return Container(
+                          child: RecipeTile(snapshot.data[index], refreshList),
+                        );
+                      },
+                      childCount: childCount,
+                    ),
+                  );
                 },
               ),
             ],
-            expandedHeight: 2 * kToolbarHeight,
-            flexibleSpace: Padding(
-              padding: const EdgeInsets.only(top: kToolbarHeight),
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 16),
-                      child: RaisedButton(
-                          color: Colors.lightBlueAccent,
-                          child: Text(
-                            "Button One",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {}),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 16),
-                      child: RaisedButton(
-                          color: Colors.lightBlueAccent,
-                          child: Text(
-                            "Button Two",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {}),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ),
-          FutureBuilder<List<Recipe>>(
-            future: _recipeList,
-            builder: (context, snapshot) {
-              var childCount = 0;
-              if (snapshot.connectionState != ConnectionState.done ||
-                  snapshot.hasData == null) {
-                childCount = 1;
-              } else {
-                childCount = snapshot.data.length;
-              }
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Container(
-                          child: Center(child: CircularProgressIndicator()));
-                    }
-                    if (snapshot.hasData == null) {
-                      return Container();
-                    }
-                    return Container(
-                      child: RecipeTile(snapshot.data[index], refreshList),
-                    );
-                  },
-                  childCount: childCount,
-                ),
-              );
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
